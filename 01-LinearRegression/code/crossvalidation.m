@@ -15,7 +15,7 @@ end
 % loop create buckets
 % do crossvalidation
 
-w = train(features(1:10, expectedResult), hyperparameter);
+[w, err] = train(features(1:10, expectedResult), hyperparameter);
 % TODO
 % least square fitting
 
