@@ -1,7 +1,5 @@
-% this file may be renamed
+%% this file may be renamed
 
-
- 
 trainingdata = '../testdata/training.csv';
 %LEARN Summary of this function goes here
 %   Detailed explanation goes here
@@ -13,13 +11,19 @@ disp(['learning from ' trainingdata]);
 data = csvread(trainingdata);
 [nSamples, nColumns] = size(data);
 
-% normalize data
+%% normalize data
 dMean = repmat(mean(data), nSamples, 1);
 dVar = repmat(var(data), nSamples, 1);
 
 normalizedData = (data - dMean) ./ dVar;
 
-% split them
+%% plot data
+%compare(training_data, [1 15; 2 15]);
+compare(training_data, [13 15]);
+compare(training_data, [14 15]);
+
+
+%% split them
 result = data(:,15);
 features = data(:,1:14);
 
