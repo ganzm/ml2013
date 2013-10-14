@@ -12,9 +12,9 @@ function [ w, err ] = trainData( X, Y, h)
     w = inv((X' * X)) * X'*Y;
     
     % RMSE (Root Mean Square Error)
-    for i=1:numSamples
-       err = err + (Y(i) -  w' * X(i, :)')^2;
-    end
-    err = sqrt(err / numSamples);
+    sse = sum((Y - (w'*X')').^2); % sum square error
+    rmse = sqrt(sse / numSamples); % root mean square error
+    cvrmse = rmse / mean(Y);    % CV(RMSE)
+    err = cvrmse;
 end
 
