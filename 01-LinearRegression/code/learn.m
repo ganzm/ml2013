@@ -4,7 +4,7 @@ validationdata = csvread('../testdata/validation.csv');
 
 
 %% normalize data
-nTrainingdata = normalize(trainingdata);
+%nTrainingdata = normalize(trainingdata);
 
 %% plot data
 %compare(training_data, [1 15; 2 15]);
@@ -16,11 +16,12 @@ nTrainingdata = normalize(trainingdata);
 [X, Y] = extractFeatures(trainingdata);
 
 %% crossvalidation
-k = 0.5;    % hyper parameter
+k = 100;    % hyper parameter
 meanErrs = [1,100];
 for i=1:100
-    [meanErr, W, errorTest] = crossvalidation(X, Y, k^i);
+    [meanErr, W, errorTest] = crossvalidation(X, Y, k);
     meanErrs(i) = meanErr;
+    k = k/2;
 end
 
 %% Find best parameters
