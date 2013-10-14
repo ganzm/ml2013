@@ -12,18 +12,24 @@ nTrainingdata = normalize(trainingdata);
 %compare(trainingdata, [14 15]);~
 
 
-%% split them
-Y = trainingdata(:,15);
-X = trainingdata(:,1:14);
+%% feature extraction
+[X, Y] = extractFeatures(trainingdata);
 
 %% crossvalidation
-[meanErr, W, errorTest] = crossvalidation(X, Y, 0);
+k = 0.5;    % hyper parameter
+meanErrs = [1,100];
+for i=1:100
+    [meanErr, W, errorTest] = crossvalidation(X, Y, k^i);
+    meanErrs(i) = meanErr;
+end
+
+%% Find best parameters
+min(meanErrs)
 
 %give index of smallest error
-[~, index] = min(errorTest);
-
-w = W{index};
-Yest = computeEstimatedDelay(w, X);
+%[~, index] = min(errorTest);
+%w = W{index};
+%Yest = computeEstimatedDelay(w, X);
 
 %hist(Y-Yest)
 

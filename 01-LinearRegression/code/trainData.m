@@ -2,14 +2,17 @@
 % Input:
 %      X        = m x n feature matrix
 %      Y        = m x 1 vector representing the measured result
-%      h        = a hyper parameter
-function [ w, err ] = trainData( X, Y, h)
+%      k        = a hyper parameter
+function [ w, err ] = trainData( X, Y, k)
     [numSamples, numFeatures] = size(X);
     w = zeros(numFeatures, 1);
     err = 0;
     
-    % Closed form solution of Sum of Squares without hyper parameter
-    w = inv((X' * X)) * X'*Y;
+    % Closed form solution for Linear Regression
+    %w = inv((X' * X)) * X'*Y;
+    
+    % Closed form solution for Ridge Regression
+    w = inv(X'*X + k*eye(numFeatures)) * X'*Y;
     
     % RMSE (Root Mean Square Error)
     sse = sum((Y - (w'*X')').^2); % sum square error
