@@ -19,8 +19,8 @@ normalizedData = (data - dMean) ./ dVar;
 
 %% plot data
 %compare(training_data, [1 15; 2 15]);
-compare(training_data, [13 15]);
-compare(training_data, [14 15]);
+%compare(trainingdata, [13 15]);
+%compare(trainingdata, [14 15]);
 
 
 %% split them
@@ -33,6 +33,9 @@ features = data(:,1:14);
 
 % result varies by 10^x
 result = log(result);
+
+
+crossvalidation(features, result, 0)
 
 
 
