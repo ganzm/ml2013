@@ -1,44 +1,30 @@
-%% this file may be renamed
+%% read raw csv data
+trainingdata = csvread('../testdata/training.csv');
+validationdata = csvread('../testdata/validation.csv');
 
-trainingdata = '../testdata/training.csv';
-%LEARN Summary of this function goes here
-%   Detailed explanation goes here
-
-disp(['learning from ' trainingdata]);
-
-
-% read raw csv data
-data = csvread(trainingdata);
-[nSamples, nColumns] = size(data);
 
 %% normalize data
-dMean = repmat(mean(data), nSamples, 1);
-dVar = repmat(var(data), nSamples, 1);
-
-normalizedData = (data - dMean) ./ dVar;
+nTrainingdata = normalize(trainingdata);
 
 %% plot data
 %compare(training_data, [1 15; 2 15]);
 %compare(trainingdata, [13 15]);
-%compare(trainingdata, [14 15]);
+%compare(trainingdata, [14 15]);~
 
 
 %% split them
-result = data(:,15);
-features = data(:,1:14);
+Y = trainingdata(:,15);
+X = trainingdata(:,1:14);
 
+%% crossvalidation
+[meanErr, W, errorTest] = crossvalidation(X, Y, 0);
 
-% logarithmic features
-% column 8 to 13 are numbers to the power of 2
+%give index of smallest error
+[~, index] = min(errorTest);
 
-% result varies by 10^x
-result = log(result);
+w = W{index};
+Yest = computeEstimatedDelay(w, X);
 
-
-crossvalidation(features, result, 0)
-
-
-
-
+%hist(Y-Yest)
 
 
