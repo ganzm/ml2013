@@ -1,24 +1,51 @@
-function [ meanErr ] = crossvalidation( features, expectedResult, hyperparameter)
+% crossvalidation
+%
+% Input:
+%   features        - k x n 
+%   expectedResult  - k x 1 
+%   hyperparameter  - struct with different parameters
+%   
+% Output:
+%   meanerr       - mean CV(RMSE)
+%   W             - 1 x K Vector containing different w
+%   errorTest     - 1 x K Vector containing the generalized CV(RMSE)
+%
 
-%CROSSVALIDATION Summary of this function goes here
-%   Detailed explanation goes here
-% feature(:,1) wäre bsp. cache size
 
-[numSamples, numFeatures] = size(features);
-[numResultSamples, ~] = size(expectedResult);
+function [ meanErr, W, errorTest] = crossvalidation( X, Y, hyperparameter)
 
-if numSamples ~= numResultSamples 
-    error 'blub';
+%[numSamples, numFeatures] = size(features);
+%[numResultSamples, ~] = size(expectedResult);
+
+
+%Indices for crossvalidation
+K=10;
+indices = crossvalind('Kfold',Y,K);
+
+
+%for each bucket do crossvalidation
+errorTrain = zeros(1,K);
+errorTest = zeros(1,K);
+W = cell(1,K);
+for i = 1:K
+    test = (indices == i);
+    train = ~test;
+    Xtrain = X(train,:);
+    Ytrain = Y(train,:);
+    
+    
+    [W{i}, errorTrain(i)] = trainData(Xtrain, Ytrain, hyperparameter);
+   
+    
+    Ytest = Y(test,:);
+    Xtest = X(test,:);
+    
+    sse = sum((Ytest -  (W{i}' * Xtest')').^2); % sum square error
+    rmse = sqrt(sse /size(Ytest,1)); % root mean square error
+    errorTest(i) = rmse / mean(Ytest); % CV(RMSE)
 end
 
 
-% loop create buckets
-% do crossvalidation
-
-[w, err] = train(features(1:10, expectedResult), hyperparameter);
-% TODO
-% least square fitting
-
-meanErr = 0;
+meanErr = sum(errorTest)/K;
 end
 
