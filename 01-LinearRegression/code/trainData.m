@@ -4,9 +4,8 @@
 %      Y        = m x 1 vector representing the measured result
 %      k        = a hyper parameter
 function [ w, err ] = trainData( X, Y, k)
+
     [numSamples, numFeatures] = size(X);
-    w = zeros(numFeatures, 1);
-    err = 0;
     
     % Closed form solution for Linear Regression
     %w = inv((X' * X)) * X'*Y;

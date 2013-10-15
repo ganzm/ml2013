@@ -19,11 +19,9 @@
 %                 result.
 % Output:
 %   X           - a matrix containing all features
-%   Y           - a column vector containing the result
-function [ X, Y ] = extractFeatures( data )
+function [ X ] = extractFeatures( data )
     % standard features
     X = data(:,1:14);
-    Y = data(:,15);
     
     % transform them to log2 values
     X(:, 8:9) = log2(X(:,8:9));
