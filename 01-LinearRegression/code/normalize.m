@@ -1,4 +1,4 @@
-function [ normalizedData ] = normalize( data )
+function [ normalizedData, dMean, dVar ] = normalize( data )
     [nSamples, ~] = size(data);
 
     dMean = repmat(mean(data), nSamples, 1);

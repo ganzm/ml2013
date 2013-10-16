@@ -20,17 +20,23 @@
 % Output:
 %   X           - a matrix containing all features
 function [ X ] = extractFeatures( Xraw )
+
     X = Xraw;
     % transform them to log2 values
     X(:, 8:9) = log2(X(:,8:9));
     X(:, 11:13) = log2(X(:,11:13));
     
-    % add some empirical good polynomial features (x1*x2, x2*x3, etc.)
-    X(:, 15) = X(:,9).*X(:,14);
-    X(:, 16) = X(:,13).*X(:,14);
+%     % add some empirical good polynomial features (x1*x2, x2*x3, etc.)
+%     X(:, 15) = X(:,9).*X(:,14);
+%     X(:, 16) = X(:,13).*X(:,14);
+%     
+%     %Add one colume 
+%     X = [ones(size(X,1),1),X];
+
+    X = normalize(X);     
     
-    %Add one colume
-    X = [ones(size(X,1),1),X];
+  %  X = x2fx(X, 'quadratic');
     
+
 end
 

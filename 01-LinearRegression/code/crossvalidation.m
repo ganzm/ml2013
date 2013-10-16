@@ -38,7 +38,7 @@ for i = 1:K
     
     sse = sum((Ytest -  (W{i}' * Xtest')').^2); % sum square error
     rmse = sqrt(sse /size(Ytest,1)); % root mean square error
-    errorTest(i) = rmse / mean(Ytest); % CV(RMSE)
+    errorTest(i) = rmse ; % CV(RMSE)
 end
 
 
