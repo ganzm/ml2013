@@ -14,10 +14,6 @@
 
 function [ meanErr, W, errorTest] = crossvalidation( X, Y, hyperparameter)
 
-%[numSamples, numFeatures] = size(features);
-%[numResultSamples, ~] = size(expectedResult);
-
-
 %Indices for crossvalidation
 K=10;
 indices = crossvalind('Kfold',Y,K);

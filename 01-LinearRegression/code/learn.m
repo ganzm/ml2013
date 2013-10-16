@@ -1,24 +1,16 @@
 %% read raw csv data
-trainingdata = csvread('../testdata/training.csv');
-validationdata = csvread('../testdata/validation.csv');
+trainingData = csvread('../testdata/training.csv');
+testingData = csvread('../testdata/testing.csv');
+validationData = csvread('../testdata/validation.csv');
 
-% Settings
-trainingdataPath = '../testdata/training.csv';
-testingdataPath = '../testdata/testing.csv';
-validationdataPath = '../testdata/validation.csv';
-
-%% read raw csv data
-trainingData = csvread(trainingdataPath);
-testingData = csvread(testingdataPath);
-validationData = csvread(validationdataPath);
-
-[n, nColumns] = size(trainingdata);
+[n, nColumns] = size(trainingData);
 
 
 %% feature extraction
 Y = trainingData(:,15);
+X = trainingData(:,1:14);
 
-X = extractFeatures(trainingData);
+X = extractFeatures(X);
 X_test = extractFeatures(testingData);
 X_validation = extractFeatures(validationData);
 
@@ -29,8 +21,7 @@ X_validation = extractFeatures(validationData);
 % X = (X - dMean) ./ dVar;
 
 %% perform crossvalidation
-
-k = 100;    % hyper parameter
+k = 100; % hyper parameter
 meanErrs = 1:100;
 kValues = 1:100;
 for i=1:100
