@@ -28,9 +28,7 @@ function [ X ] = extractFeatures( Xraw )
     % add some empirical good polynomial features (x1*x2, x2*x3, etc.)
     X(:, 15) = X(:,9).*X(:,14);
     X(:, 16) = X(:,13).*X(:,14);
-    
-    %Add one colume
-    X = [ones(size(X,1),1),X];
+  
     
 end
 
