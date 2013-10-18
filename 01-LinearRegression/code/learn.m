@@ -33,8 +33,7 @@ k = 0:1e-5:1e-3;  % 0    0.00001    0.00002 till 0.0001
 meanErrs = zeros(1,size(k,2));
 
 for i=1:size(k,2)
-    [meanErr, W, errorTest] = crossvalidation(X, Y, k(i));
-    meanErrs(i) = meanErr;
+    [meanErrs(i), ~, ~] = crossvalidation(X, Y, k(i));
 end
 
 
@@ -43,15 +42,12 @@ end
 bestK = k(minIndex);
 [bestW, bestError] = trainData(X, Y, bestK);
 
-
 %plot k's vs errors (for finding out good k's)
 figure
+disp(['best K = ' num2str(bestK)])
+disp(['best mean Error = ' num2str(minVal)])
 disp(['bestError = ' num2str(bestError)])
 plot(k,meanErrs, 'r+')
-
-%plot bestK vs bestError
-%hold on;
-%plot(bestK,bestError, 'b+')
 
 %% for testing only
 
@@ -59,13 +55,7 @@ Ylearn = (bestW'*X')';
 
 Ylearn = denormalize(Ylearn,denormParamY);
 Y = denormalize(Y,denormParamY);
-
-
-%Ytest = Ytest*1e6;
-%Y = Y*1e6;
-figure
-hist(Ylearn-Y)
-disp(['we have ' num2str(size(Ylearn(Ylearn < 0),1)) ' negative values in Y_learn'])
+disp(['we have ' num2str(size(Ylearn(Ylearn < 0),1)) ' negative values in Ylearn'])
 
 
 %% compute results
