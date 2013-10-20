@@ -5,6 +5,7 @@ function [ Y_trans, parameter ] = transform( Y )
 parameter.mean = mean;
 parameter.var = var;
 
+Y_trans = Y;
 
 end
 

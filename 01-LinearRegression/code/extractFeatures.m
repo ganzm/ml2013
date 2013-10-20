@@ -22,18 +22,63 @@
 function [ X ] = extractFeatures( Xraw )
 
     X = Xraw;
-    % transform them to log2 values
-    X(:, 8:9) = log2(X(:,8:9));
-    X(:, 11:13) = log2(X(:,11:13));
+    
+    % Width (2,4,6,8)
+    X(:,1) = log2(X(:,1));
+    
+    % ROB size (32 to 160 (increments of 8)
+    X(:,2) = log2(X(:,2)) ;
+    
+    % IQ size (8 to 80 (increments of 8)
+    X(:,3) = X(:,3) ./ 8;
+ 
+    % LSQ size (8 to 80 (increments of 8)
+    X(:,4) = log2( X(:,4));
+    
+    % RF size (40 to 160 (increments of 8)
+    X(:,5) = log2( X(:,5));
+    
+    % RF read ports (2 to 16 (increments of 2)
+    X(:,6) = log2( X(:,6));
+    
+    % RF write ports (1 to 8 (increments of 1)
+    X(:,7) = log2( X(:,7));
+    
+    % Gshare size 1K to 32K (two powers)
+    X(:,8) = log2( X(:,8));
+    
+    % BTB size 1K 2K 4K
+    X(:,9) = log2( X(:,9));
+    
+    % Branches allowed 8,16,24,32
+    X(:,10) =  X(:,10);
+    
+    % L1 lcache size 8K to 128K
+    X(:,11) =  log2(X(:,11));
+    % L1 Dcache size 8K to 128K
+    X(:,12) =  log2(X(:,12));
+    % L2 Ucache size 256K to 4M
+    X(:,13) =  log2(X(:,13));
+    
+    % Depth 9 to 36 (increments of 3)
+    X(:,14) =  (X(:,14));
     
 %     % add some empirical good polynomial features (x1*x2, x2*x3, etc.)
-%     X(:, 15) = X(:,9).*X(:,14);
-%     X(:, 16) = X(:,13).*X(:,14);
+     X(:, 15) = X(:,7).*X(:,14);
+     X(:, 16) = X(:,8).*X(:,14);
+     X(:, 17) = X(:,9).*X(:,14);
+     X(:, 18) = X(:,13).*X(:,14);
+     
+    X(:, 19) = X(:,7).*X(:,1);
+    X(:, 20) = X(:,8).*X(:,1);
+    X(:, 21) = X(:,12).*X(:,1);
+    X(:, 22) = X(:,13).*X(:,1);
+     
 %     
 %     %Add one colume 
 %     X = [ones(size(X,1),1),X];
 
-    X = normalize(X);     
+%    X = normalize(X);     
     
   %  X = x2fx(X, 'quadratic');
     
