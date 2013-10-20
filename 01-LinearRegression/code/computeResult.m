@@ -19,7 +19,7 @@ X_validation = extractFeatures(X_validation);
 %X_validation = x2fx(X_validation,'quadratic');
 
 
-%% add row with one 
+%% prepend column with 1's
 X_test = [ones(size(X_test,1),1),X_test];
 X_validation = [ones(size(X_validation,1),1),X_validation];
 

@@ -16,7 +16,11 @@ X = extractFeatures(X);
 %X = x2fx(X,'quadratic');
 [Y, denormParamY] = normalize(Y);
 
-%% add row with one 
+% check correlations
+%C = corr([X, Y]);
+%C(end,:);
+
+%% prepend column with 1s for offset
 X = [ones(size(X,1),1),X];
 
 %% perform crossvalidation
