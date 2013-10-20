@@ -9,6 +9,20 @@ validationData = csvread('../testdata/validation.csv');
 
 write_output = true;
 
+
+%% Test, remove me
+
+tz = trainingData(:,1:14);
+ty = transform(trainingData(:,15));
+
+tzz = [ty, tz, tz.^2, sqrt(tz), log2(tz)];
+tcorr = corr(tzz, tzz);
+tc = tcorr(:,1);
+tc = [tc(2:15), tc(16:29), tc(30:43), tc(44:57)];
+
+% tc says how good a feature correlates to y
+
+
 %% feature extraction
 Y_train = trainingData(:,15);
 [Y_trainNormalized, transformParameter] = transform(Y_train);
@@ -23,7 +37,7 @@ X_validation = validationData(:,1:14);
 X_validation = extractFeatures(X_validation);
 
 %% perform crossvalidation
-kValues = logspace(-6, 1, 50); % hyper parameter
+kValues = logspace(-6, 2, 50); % hyper parameter
 meanErrs = zeros(size(kValues));
 
 for i=1:size(kValues,2)

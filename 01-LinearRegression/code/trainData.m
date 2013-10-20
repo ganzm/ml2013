@@ -11,7 +11,7 @@ function [ w, err ] = trainData( X, Y, k)
     %w = inv((X' * X)) * X'*Y;
     
     % Closed form solution for Ridge Regression
-    w = inv(X'*X + k*eye(numFeatures)) * X'*Y;
+    w = (X'*X + k*eye(numFeatures))\X'*Y;
     
     % RMSE (Root Mean Square Error)
     sse = sum((Y - (w'*X')').^2); % sum square error
