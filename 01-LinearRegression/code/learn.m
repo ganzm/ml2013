@@ -62,4 +62,4 @@ disp(['best K = ' num2str(bestK)])
 disp(['best mean Error = ' num2str(minVal)])
 
 %% compute results
-computeResult(bestW, denormParamY, 0)
+computeResult(bestW, denormParamY, 1);

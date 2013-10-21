@@ -31,8 +31,8 @@ disp(['we have ' num2str(size(Y_validation(Y_validation < 0),1)) ' negative valu
 
 %% Write output file
 if generateFiles == 1
-    writeOutput( ['testresult-' num2str(datestr(now)) '.txt'], Y_test);
-    writeOutput( ['validation-' num2str(datestr(now)) '.txt'], Y_validation);
+    writeOutput( 'testresult.txt', Y_test);
+    writeOutput( 'validation.txt', Y_validation);
 end
 
 end
