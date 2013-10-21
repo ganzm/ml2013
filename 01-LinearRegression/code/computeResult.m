@@ -18,11 +18,6 @@ X_validation = extractFeatures(X_validation);
 %X_test = x2fx(X_test,'quadratic');
 %X_validation = x2fx(X_validation,'quadratic');
 
-
-%% prepend column with 1's
-X_test = [ones(size(X_test,1),1),X_test];
-X_validation = [ones(size(X_validation,1),1),X_validation];
-
 %% compute result
 Y_test = w'*X_test';
 Y_validation = w'*X_validation';
@@ -33,6 +28,7 @@ Y_validation = denormalize(Y_validation,denormParamY);
 
 disp(['we have ' num2str(size(Y_test(Y_test < 0),1)) ' negative values in Y_test'])
 disp(['we have ' num2str(size(Y_validation(Y_validation < 0),1)) ' negative values in Y_validation'])
+
 %% Write output file
 if generateFiles == 1
     writeOutput( ['testresult-' num2str(datestr(now)) '.txt'], Y_test);

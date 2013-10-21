@@ -1,66 +1,65 @@
+close all;
+
 %% read raw csv data
 trainingData = csvread('../testdata/training.csv');
 [n, nColumns] = size(trainingData);
 
 
+%% Test, remove me
+
+tz = trainingData(:,1:14);
+ty = transform(trainingData(:,15));
+
+tzz = [ty, tz, tz.^2, tz.^3, tz.^4, sqrt(tz), log2(tz)];
+tcorr = corr(tzz, tzz);
+tc = tcorr(:,1);
+tc = [tc(2:15), tc(16:29), tc(30:43), tc(44:57), tc(58:71), tc(72:85)];
+
+% tc says how good a feature correlates to y
+
+
 %% split big Matrix and feature extraction on X
 Y = trainingData(:,15);
-% test if micro to second is a good idea
-%Y = Y.*1e-6;
 
 X = trainingData(:,1:14);
 X = extractFeatures(X);
 
 %% normailzation
-[X, ~] = normalize(X);
+[Xnorm, ~] = normalize(X);
 %X = x2fx(X,'quadratic');
-[Y, denormParamY] = normalize(Y);
+[Ynorm, denormParamY] = normalize(Y);
 
-% check correlations
-C = corr([X, Y]);
-C(end,:)
-
-%% prepend column with 1s for offset
-X = [ones(size(X,1),1),X];
 
 %% perform crossvalidation
-%k = 0:1e-5:5e-3; % hyper parameter
-k = 0:1e-5:1e-3;  % 0    0.00001    0.00002 till 0.0001
+kValues = logspace(-6, 2, 50); % hyper parameter
+meanErrs = zeros(size(kValues));
 
-% the old way.. starting from 100, 100/2, etc.
-% k = zeros(1,100);
-% k(1)=100;
-% for i=2:size(k,2)
-%    k(i) = k(i-1)/2; 
-% end
-
-meanErrs = zeros(1,size(k,2));
-
-for i=1:size(k,2)
-    [meanErrs(i), ~, ~] = crossvalidation(X, Y, k(i));
+for i=1:size(kValues,2)
+    [meanErrs(i), W, errorTest] = crossvalidation(Xnorm, Ynorm, kValues(i));
 end
 
+%% Plot k-values and their corresponding errors
+figure;
+semilogx(kValues, meanErrs);
+title('Ridge regression lambda values and their errors');
 
 %% Find best parameters
 [minVal, minIndex] = min(meanErrs);
-bestK = k(minIndex);
-[bestW, bestError] = trainData(X, Y, bestK);
+bestK = kValues(minIndex);
+[bestW, bestError] = trainData(Xnorm, Ynorm, bestK);
+
+% estimate error CVRMSE
+Y_trainresult = Xnorm * bestW;
+Y_trainresult = denormalize(Y_trainresult, denormParamY);
+
+sse = sum((Y - Y_trainresult).^2); % sum square error
+rmse = sqrt(sse / n); % root mean square error
+bestCVRMSE = rmse / mean(Y);    % CV(RMSE)
 
 %plot k's vs errors (for finding out good k's)
-figure
+disp(['best CVRMSE = ' num2str(bestCVRMSE)])
 disp(['best K = ' num2str(bestK)])
 disp(['best mean Error = ' num2str(minVal)])
-disp(['bestError = ' num2str(bestError)])
-plot(k,meanErrs, 'r+')
-
-%% for testing only
-
-Ylearn = (bestW'*X')';
-
-Ylearn = denormalize(Ylearn,denormParamY);
-Y = denormalize(Y,denormParamY);
-disp(['we have ' num2str(size(Ylearn(Ylearn < 0),1)) ' negative values in Ylearn'])
-
 
 %% compute results
 computeResult(bestW, denormParamY, 0)
