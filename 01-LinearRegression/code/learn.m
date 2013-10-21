@@ -7,18 +7,18 @@ validationData = csvread('../testdata/validation.csv');
 
 [n, nColumns] = size(trainingData);
 
+% result write flag
 write_output = true;
-
 
 %% Test, remove me
 
 tz = trainingData(:,1:14);
 ty = transform(trainingData(:,15));
 
-tzz = [ty, tz, tz.^2, sqrt(tz), log2(tz)];
+tzz = [ty, tz, tz.^2, tz.^3, tz.^4, sqrt(tz), log2(tz)];
 tcorr = corr(tzz, tzz);
 tc = tcorr(:,1);
-tc = [tc(2:15), tc(16:29), tc(30:43), tc(44:57)];
+tc = [tc(2:15), tc(16:29), tc(30:43), tc(44:57), tc(58:71), tc(72:85)];
 
 % tc says how good a feature correlates to y
 
@@ -79,8 +79,6 @@ disp(['Best Error is ' num2str(bestError)]);
 %% Write output file
 if write_output
     
-    bestError = 0;
-    
-    writeOutput( ['testresult-' num2str(bestError) '.txt'], Y_test);
-    writeOutput( ['validation-' num2str(bestError) '.txt'], Y_validation);
+    writeOutput( 'testresult.txt', Y_test);
+    writeOutput( 'validation.txt', Y_validation);
 end
