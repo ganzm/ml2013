@@ -17,8 +17,8 @@ X = extractFeatures(X);
 [Y, denormParamY] = normalize(Y);
 
 % check correlations
-%C = corr([X, Y]);
-%C(end,:);
+C = corr([X, Y]);
+C(end,:)
 
 %% prepend column with 1s for offset
 X = [ones(size(X,1),1),X];

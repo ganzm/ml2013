@@ -37,7 +37,7 @@ for i = 1:K
     Xtest = X(test,:);
     
     % Calculate Error
-    errorTest(i) = calcerror(Xtest, Ytest, W{i});
+    errorTest(i) = calcRMSE(Xtest, Ytest, W{i});
     
 end
 meanErr = sum(errorTest)/K;

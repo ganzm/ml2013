@@ -14,6 +14,6 @@ function [ w, err ] = trainData( X, Y, k)
     w = (X'*X + k*eye(numFeatures))\X'*Y;
     
     % Calculate Error
-    err = calcerror(X,Y,w);
+    err = calcRMSE(X,Y,w);
 end
 
