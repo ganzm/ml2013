@@ -26,8 +26,12 @@ Y_validation = w'*X_validation';
 Y_test = denormalize(Y_test,denormParamY);
 Y_validation = denormalize(Y_validation,denormParamY);
 
-disp(['we have ' num2str(size(Y_test(Y_test < 0),1)) ' negative values in Y_test'])
-disp(['we have ' num2str(size(Y_validation(Y_validation < 0),1)) ' negative values in Y_validation'])
+%EXTREME HACK !!!!NOT GOOD!!!!! NOT AT ALL I speak about the ABS thing
+Y_test = abs(Y_test);
+Y_validation = abs(Y_validation);
+
+disp(['we have ' num2str(size(Y_test(Y_test < 0),2)) ' negative values in Y_test'])
+disp(['we have ' num2str(size(Y_validation(Y_validation < 0),2)) ' negative values in Y_validation'])
 
 %% Write output file
 if generateFiles == 1

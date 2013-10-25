@@ -1,0 +1,11 @@
+    % 10 features: 0.2396 Error
+    X          = Xraw(:,1);
+    X(:,end+1) = Xraw(:,1).^2;
+    X(:,end+1) = sqrt(Xraw(:,1));
+    X(:,end+1) = log2(Xraw(:,1));
+    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,2));
+    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,2));  
+    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,3));
+    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,3));
+    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,4));
+    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,4));

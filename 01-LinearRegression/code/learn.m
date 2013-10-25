@@ -4,16 +4,15 @@ close all;
 trainingData = csvread('../testdata/training.csv');
 [n, nColumns] = size(trainingData);
 
-
 %% Test, remove me
 
-tz = trainingData(:,1:14);
-ty = transform(trainingData(:,15));
-
-tzz = [ty, tz, tz.^2, tz.^3, tz.^4, sqrt(tz), log2(tz)];
-tcorr = corr(tzz, tzz);
-tc = tcorr(:,1);
-tc = [tc(2:15), tc(16:29), tc(30:43), tc(44:57), tc(58:71), tc(72:85)];
+% tz = trainingData(:,1:14);
+% ty = transform(trainingData(:,15));
+% 
+% tzz = [ty, tz, tz.^2, tz.^3, tz.^4, sqrt(tz), log2(tz)];
+% tcorr = corr(tzz, tzz);
+% tc = tcorr(:,1);
+% tc = [tc(2:15), tc(16:29), tc(30:43), tc(44:57), tc(58:71), tc(72:85)];
 
 % tc says how good a feature correlates to y
 
@@ -26,7 +25,6 @@ X = extractFeatures(X);
 
 %% normailzation
 [Xnorm, ~] = normalize(X);
-%X = x2fx(X,'quadratic');
 [Ynorm, denormParamY] = normalize(Y);
 
 
@@ -51,12 +49,12 @@ bestK = kValues(minIndex);
 % estimate error CVRMSE
 Y_trainresult = Xnorm * bestW;
 Y_trainresult = denormalize(Y_trainresult, denormParamY);
+disp(['we have ' num2str(size(Y_trainresult(Y_trainresult < 0),1)) ' negative values in Y_trainresult'])
 
 sse = sum((Y - Y_trainresult).^2); % sum square error
 rmse = sqrt(sse / n); % root mean square error
 bestCVRMSE = rmse / mean(Y);    % CV(RMSE)
 
-%plot k's vs errors (for finding out good k's)
 disp(['best CVRMSE = ' num2str(bestCVRMSE)])
 disp(['best K = ' num2str(bestK)])
 disp(['best mean Error = ' num2str(minVal)])

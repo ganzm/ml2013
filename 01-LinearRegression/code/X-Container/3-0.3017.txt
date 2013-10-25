@@ -1,0 +1,4 @@
+ 	% 3 features 0.3017 Error
+ 	X = (Xraw(:,1).*Xraw(:,2));
+    X(:,end+1) = (Xraw(:,1).^2.*Xraw(:,2));
+    X(:,end+1) = sqrt((Xraw(:,1)).*(Xraw(:,2).^2));

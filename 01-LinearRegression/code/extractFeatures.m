@@ -21,79 +21,171 @@
 %   X           - a matrix containing all features
 function [ X ] = extractFeatures( Xraw )
 
-    X = Xraw;
+   % Xraw(:, 8:9) = log2(Xraw(:,8:9));
+   % Xraw(:, 11:13) = log2(Xraw(:,11:13));
     
-    % add some empirical good polynomial features (x1*x2, x2*x3, etc.)
-    X(:, 15) = X(:,9).*X(:,14);
-    X(:, 16) = X(:,13).*X(:,14);
-    %% simple features
-    % Width (2,4,6,8)
-    X(:,1) = log2(X(:,1));
-    X(:, 17) = X(:,9).*X(:,13);
-    X(:, 18) = X(:,12).*X(:,13);
-    X(:, 19) = X(:,13).*X(:,13);
     
-    % IQ size (8 to 80 (increments of 8)
-    X(:,3) = log(X(:,3) ./8 );
+    %ordering
+    Xraw = [Xraw(:,13), Xraw(:,14), Xraw(:,5), Xraw(:,10), Xraw(:,3),... 
+    Xraw(:,8), Xraw(:,6), Xraw(:,9), Xraw(:,11), Xraw(:,2), Xraw(:,7), ...
+    Xraw(:,1),Xraw(:,4), Xraw(:,12)];
+    
+    
  
-    % LSQ size (8 to 80 (increments of 8)
-    X(:,4) = log2( X(:,4));
     
-    % RF size (40 to 160 (increments of 8)
-    X(:,5) = log2( X(:,5));
+   
+     % PAY ATTETION FIRST ONE IS NOT END+1
+      X          = Xraw(:,1);
+    X(:,end+1) = Xraw(:,1).^2;
+    X(:,end+1) = sqrt(Xraw(:,1));
+    X(:,end+1) = log2(Xraw(:,1));
     
-    % RF read ports (2 to 16 (increments of 2)
-    X(:,6) = log2( X(:,6));
+    X(:,end+1) = Xraw(:,1).*Xraw(:,2);
+    X(:,end+1) = (Xraw(:,1).^2).*Xraw(:,2);
+    X(:,end+1) = (Xraw(:,1).^3).*Xraw(:,2);
+    X(:,end+1) = (Xraw(:,1).^4).*Xraw(:,2);
+    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,2));
+    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,2));
+   
+    X(:,end+1) = Xraw(:,1).*Xraw(:,3);
+    X(:,end+1) = (Xraw(:,1).^2).*Xraw(:,3);
+    X(:,end+1) = (Xraw(:,1).^3).*Xraw(:,3);
+    X(:,end+1) = (Xraw(:,1).^4).*Xraw(:,3);
+    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,3));
+    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,3));
     
-    % RF write ports (1 to 8 (increments of 1)
-    X(:,7) = log2( X(:,7));
+    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,4));
+    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,4));
     
-    % Gshare size 1K to 32K (two powers)
-    X(:,8) = log2( X(:,8));
+    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,5));
+    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,5));
     
-    % BTB size 1K 2K 4K
-    X(:,9) = log2( X(:,9));
+    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,6));
+    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,6));
     
-    % Branches allowed 8,16,24,32
-    X(:,10) =  log(X(:,10));
+    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,7));
+    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,7));
     
-    % L1 lcache size 8K to 128K
-    X(:,11) =  log2(X(:,11));
-    % L1 Dcache size 8K to 128K
-    X(:,12) =  log2(X(:,12));
-    % L2 Ucache size 256K to 4M
-    X(:,13) =  sqrt(X(:,13));
+    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,8));
+    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,8));
     
-    % Depth 9 to 36 (increments of 3)
-    X(:,14) =  (X(:,14));
-    X(:,14) = normalize(X(:,14));
+    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,9));
+    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,9));
     
-    %% combined features
-%     % add some empirical good polynomial features (x1*x2, x2*x3, etc.)
-     X(:, 15) = ( X(:,7).*X(:,14));
-     X(:, 16) = X(:,8).*X(:,14);
-     X(:, 17) = (X(:,9).*X(:,14));
-     X(:, 18) = X(:,13).*X(:,14);
-     
-    X(:, 19) = X(:,7).*X(:,1);
-    X(:, 20) = X(:,8).*X(:,1);
-    X(:, 21) = X(:,12).*X(:,1);
-    X(:, 22) = X(:,13).*X(:,1);
-  
-    X(:, 23) = X(:,7).*X(:,9);
-    X(:, 24) = X(:,8).*X(:,9);
-    X(:, 25) = X(:,12).*X(:,9);
-    X(:, 26) = X(:,13).*X(:,9);
+    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,10));
+    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,10));
     
-    X(:, 27) = X(:,6).*X(:,1);
-    X(:, 28) = X(:,7).*X(:,1);
-     
-%     %Add one colume 
-%     X = [ones(size(X,1),1),X];
+    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,11));
+    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,11));
+    
+    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,12));
+    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,12));
+    
+    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,13));
+    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,13));
+    
+    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,14));
+    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,14));
+    
+    %%%%%%%%%%%%%%%%%
+    X(:,end+1) = Xraw(:,2);
+    X(:,end+1) = Xraw(:,2).^2;
+    
+    X(:,end+1) = sqrt(Xraw(:,2).*Xraw(:,3));
+    X(:,end+1) = log2(Xraw(:,2).*Xraw(:,3));
+    
+    X(:,end+1) = log2(Xraw(:,2).*Xraw(:,4));
+    X(:,end+1) = sqrt(Xraw(:,2).*Xraw(:,4));
+    
+    X(:,end+1) = log2(Xraw(:,2).*Xraw(:,5));
+    X(:,end+1) = sqrt(Xraw(:,2).*Xraw(:,5));
+    
+    X(:,end+1) = log2(Xraw(:,2).*Xraw(:,6));
+    X(:,end+1) = sqrt(Xraw(:,2).*Xraw(:,6));
+    
+    X(:,end+1) = log2(Xraw(:,2).*Xraw(:,7));
+    X(:,end+1) = sqrt(Xraw(:,2).*Xraw(:,7));
+    
+    X(:,end+1) = log2(Xraw(:,2).*Xraw(:,8));
+    X(:,end+1) = sqrt(Xraw(:,2).*Xraw(:,8));
+    
+    X(:,end+1) = log2(Xraw(:,2).*Xraw(:,9));
+    X(:,end+1) = sqrt(Xraw(:,2).*Xraw(:,9));
+    
+    X(:,end+1) = log2(Xraw(:,2).*Xraw(:,10));
+    X(:,end+1) = sqrt(Xraw(:,2).*Xraw(:,10));
+    
+    X(:,end+1) = log2(Xraw(:,2).*Xraw(:,11));
+    X(:,end+1) = sqrt(Xraw(:,2).*Xraw(:,11));
+    
+    X(:,end+1) = log2(Xraw(:,2).*Xraw(:,12));
+    X(:,end+1) = sqrt(Xraw(:,2).*Xraw(:,12));
 
-    X = normalize(X);     
+    X(:,end+1) = log2(Xraw(:,2).*Xraw(:,13));
+    X(:,end+1) = sqrt(Xraw(:,2).*Xraw(:,13));
     
-  %  X = x2fx(X, 'quadratic');
+    X(:,end+1) = log2(Xraw(:,2).*Xraw(:,14));
+    X(:,end+1) = sqrt(Xraw(:,2).*Xraw(:,14));
+     
+    %%%%%%%%%%%%%%%%%
+    X(:,end+1) = Xraw(:,3);
+    X(:,end+1) = Xraw(:,3).^2;
+    
+    
+     %%%%%%%%%%%%%%%%%
+    X(:,end+1) = Xraw(:,4);
+    X(:,end+1) = Xraw(:,4).^2;
+    
+     %%%%%%%%%%%%%%%%%
+    X(:,end+1) = Xraw(:,5);
+    X(:,end+1) = Xraw(:,5).^2;
+    
+     %%%%%%%%%%%%%%%%%
+    X(:,end+1) = Xraw(:,6);
+    X(:,end+1) = Xraw(:,6).^2;
 
+     %%%%%%%%%%%%%%%%%
+    X(:,end+1) = Xraw(:,7);
+    X(:,end+1) = Xraw(:,7).^2;
+    
+     %%%%%%%%%%%%%%%%%
+    X(:,end+1) = Xraw(:,8);
+    X(:,end+1) = Xraw(:,8).^2;
+    
+     %%%%%%%%%%%%%%%%%
+    X(:,end+1) = Xraw(:,9);
+    X(:,end+1) = Xraw(:,9).^2;
+    
+     %%%%%%%%%%%%%%%%%
+    X(:,end+1) = Xraw(:,10);
+    X(:,end+1) = Xraw(:,10).^2;
+    
+     %%%%%%%%%%%%%%%%%
+    X(:,end+1) = Xraw(:,11);
+    X(:,end+1) = Xraw(:,11).^2;
+    
+    %%%%%%%%%%%%%%%%%
+    X(:,end+1) = Xraw(:,12);
+    X(:,end+1) = Xraw(:,12).^2;
+    
+     %%%%%%%%%%%%%%%%%
+    X(:,end+1) = Xraw(:,13);
+    X(:,end+1) = Xraw(:,13).^2;
+    
+     %%%%%%%%%%%%%%%%%
+    X(:,end+1) = Xraw(:,14);
+    X(:,end+1) = Xraw(:,14).^2;
+    
+   
+     
+    
+    
+    
+     %git en seich
+%      X = bsxfun(@times, Xraw(:,1).^2, Xraw);
+%      X = [ X, bsxfun(@times, Xraw(:,2).^3, Xraw)];
+%      X = [ X, bsxfun(@times, Xraw(:,3).^3, Xraw)];
+     
+     
 end
 
