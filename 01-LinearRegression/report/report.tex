@@ -3,6 +3,10 @@
 \usepackage{amsmath}
 \usepackage[pdftex]{hyperref}
 
+% used to list matlab code - check mcode.zip mcode.sty
+\usepackage[framed,numbered,autolinebreaks,useliterate]{mcode}
+
+
 % Lengths and indenting
 \setlength{\textwidth}{16.5cm}
 \setlength{\marginparwidth}{1.5cm}
@@ -18,32 +22,65 @@
 \renewcommand{\familydefault}{\sfdefault}
 
 \title{Machine Learning 2013: Project 1 - Regression Report}
-\author{member1@student.ethz.ch\\ member2@student.ethz.ch\\ member3@student.ethz.ch\\}
+\author{fregli@student.ethz.ch\\ ganzm@student.ethz.ch\\ sandrofe@student.ethz.ch\\}
 \date{\today}
 
 \begin{document}
 \maketitle
 
 \section*{Experimental Protocol}
-Suppose that someone wants to reproduce your results. Briefly describe the steps used to obtain the
-predictions starting from the raw data set downloaded from the project website. Use the following
-sections to explain your methodology. Feel free to add graphs or screenshots if you think it's
-necessary. The report should contain a maximum of 2 pages.
+\label{sec:exp-protocl}
+%Suppose that someone wants to reproduce your results. Briefly describe the steps used to obtain the predictions starting from the raw data set downloaded from the project website. Use the following sections to explain your methodology. Feel free to add graphs or screenshots if you think it's necessary. The report should contain a maximum of 2 pages.
+
+This project was performed using Matlab only. To reproduce test results presented in this report the following steps have to be taken:
+
+\begin{itemize}
+\item Unzip the sourcefolder containing Matlab code and data sets
+\item Run learn.m to optain both files testresult.csv and validationresult.csv
+\end{itemize}
 
 \section{Tools}
-Which tools and libraries have you used (e.g. Matlab, Python with scikit-learn, Java with Weka,
-SPSS, language x with library y, $\ldots$). If you have source-code (Matlab scripts, Python scripts, Java source folder, \dots),
-make sure to submit it on the project website together with this report. If you only used
-command-line or GUI-tools describe what you did.
+%Which tools and libraries have you used (e.g. Matlab, Python with scikit-learn, Java with Weka, SPSS, language x with library y, $\ldots$). If you have source-code (Matlab scripts, Python scripts, Java source folder, \dots), make sure to submit it on the project website together with this report. If you only used command-line or GUI-tools describe what you did.
+
+As stated in Section \nameref{sec:exp-protocl} the only tool which is needed is Matlab - no fancy special commands, no additional libraries are required.
 
 \section{Algorithm}
-Describe the algorithm you used for regression (e.g. ordinary least squares, ridge regression, $\ldots$)
+%Describe the algorithm you used for regression (e.g. ordinary least squares, ridge regression, $\ldots$)
+
+
+\subsection{Which part of the code does what}
+
+\paragraph{learn.m}
+This is the main script which can be run to obtain the submitted results.
+\paragraph{trainData.m}
+Performs Ridge Regression and solves the following problem
+
+$ TODOx$
+
+using the closed form solution.
+
+
+$ w$
+
+As a result we optain the weight vector $w$ and an the RMSE.
+
+
 
 \section{Features}
-Did you construct any new features? What feature transforms did you use?
+% Did you construct any new features? What feature transforms did you use?
 
 \section{Parameters}
-How did you find the parameters of your model? (What parameters have you searched over, cross validation procedure, $\ldots$)
+%How did you find the parameters of your model? (What parameters have you searched over, cross validation procedure, $\ldots$)
+
+\subsection{Find good features}
+
+\begin{lstlisting} 
+a = 1; % MATLAB comment 
+b = 2; 
+c = a^2 + b^2; 
+
+\end{lstlisting}
+
 
 \section{Lessons Learned} What other algorithms, tools or methods did you try out that didn't work well?
 Why do you think they performed worse than what you used for your final submission?
