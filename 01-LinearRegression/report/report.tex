@@ -53,7 +53,7 @@ The algorithm performs the following steps an can be started by running learn.m
 \item Read csv file
 \item Normalize training input and result data
 \item create feature vectors
-\item perform cross validation and obtain weight vector $w$
+\item perform cross validation and obtain $\lambda$ and weight vector $w$
 \item generate validation and testing output
 \end{itemize}
 
@@ -86,27 +86,31 @@ This is the part of the code where features are created and transformed.
 \subsection{Find good features}
 \label{subsec:findgoodfeatures}
 
-\textbf{TODO}
+We had different approaches to find good featues:
 
-\begin{figure}
-\begin{center}
-\begin{lstlisting} 
-x = trainingData(:,1:14);
-y = transform(trainingData(:,15));
+\begin{itemize}
+	\item \textbf{I feel lucky, give it a shot:} Simply plotting each feature and some handcrafted combinations against the delay in order to see if and how they correlate. This was an annoying task, since it took long time and at the end it revealed only very few features.
 
-% prepare features
-xfeatures = [y, x, x.^2, x.^3, x.^4, sqrt(x), log2(x)];
+	\item \textbf{Brute force automation:} Create feature combinations automatically and just look at the correlation matrices. This was easy to compute and it took only a few seconds to verify the results (See listing below). With this method we obtained a lot more useful features and could reduce significantly the prediction error.
+	\begin{center}
+	\begin{lstlisting} 
+	x = trainingData(:,1:14);
+	y = transform(trainingData(:,15));
 
-% calculate correlation
-corr = corr(xfeatures, xfeatures);
+	% prepare features
+	xfeatures = [y, x, x.^2, x.^3, x.^4, sqrt(x), log2(x)];
 
-% only consider how good the y feature correlates
-c = corr(:,1);
-\end{lstlisting}
-\end{center}
-\caption{Code Sample to find correlation}
-\label{lst:matlab-correlation}
-\end{figure}
+	% calculate correlation
+	corr = corr(xfeatures, xfeatures);
+
+	% only consider how good the y feature correlates
+	c = corr(:,1);
+	\end{lstlisting}
+	Figure 1: Code Sample to find correlation
+	\end{center}
+
+	\item \textbf{Fredo - style - greedy}
+\end{itemize}
 
 
 
@@ -115,10 +119,8 @@ c = corr(:,1);
 
 \subsection{Parameter $\lambda$}
 
-By iteratively applying cross validation best parameter $\lambda$ is determined as seen in \nameref{lst:matlab-crossvalidation}. We chose an arbitrary number of parameters (50 in this sample) and apply cross validation. The parameter which yields the smallest error is then chosen.
+By iteratively applying cross validation, the best parameter $\lambda$ is determined as seen in Figure 2. We chose an arbitrary number of parameters (50 in this sample) and apply cross validation. The parameter which yields the smallest error is then chosen.
 
-
-\begin{figure}
 \begin{center}
 \begin{lstlisting} 
 % perform crossvalidation
@@ -129,15 +131,14 @@ for i=1:size(lambdaValues,2)
     [meanErrs(i), W, errorTest] = crossvalidation(Xnorm, Ynorm, lambdaValues(i));
 end
 \end{lstlisting}
+Figure 2: Code Sample to find best $\lambda$
 \end{center}
-\caption{Code Sample to find best $\lambda$}
-\label{lst:matlab-crossvalidation}
-\end{figure}
+
 
 \section{Lessons Learned} 
 Most of the time spent for the project was used to search for good features. At the start of the project  it was mostly unclear how to find such features. Getting a test score which meets our expectation by simply try and error features did not yield the expected result.
 
-We later automated our search for good features by applying the methods described in \nameref{subsec:findgoodfeatures}. This lead to much better result.
+We later automated our search for good features by applying the methods described in \nameref{subsec:findgoodfeatures}. This led to much better results.
 
 %What other algorithms, tools or methods did you try out that didn't work well?
 %Why do you think they performed worse than what you used for your final submission?
