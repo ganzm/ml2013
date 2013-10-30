@@ -31,147 +31,40 @@ Xraw = trainingData(:,1:14);
  
 
 if nargin == 2 
+    X = [];
     %good starting X    -> 0.1731
-    X          = Xraw(:,1);
-    X(:,end+1) = Xraw(:,1).^2;
-    X(:,end+1) = sqrt(Xraw(:,1));
-    X(:,end+1) = log2(Xraw(:,1));
+     fIdx1 = 1;
+    fIdx2 = 2;
+    grouped = groupBy(Xraw(:,fIdx1));
+    [~,groupSize] = size(grouped);
+    newFeatures = [];
+    for groupIndex=1:groupSize
+        temp = grouped(groupIndex);
+        
+        newFeature = Xraw(:,fIdx2);
+        newFeature(Xraw(:,fIdx1) ~= temp) = 0;
+       
+        newFeatures = [newFeatures, newFeature];
+       
+    end
     
+    
+    X = [X,newFeatures(:,1)+newFeatures(:,2)+newFeatures(:,3)];
+    X = [X,newFeatures(:,4)+newFeatures(:,5)];
+    
+    
+     X(:,end+1) = log2((Xraw(:,1).^1).*(Xraw(:,3).^2));%0.65457
+    X(:,end+1) = log2((Xraw(:,1).^2).*(Xraw(:,3).^0));%0.7014
+    X(:,end+1) = log2((Xraw(:,1).^1).*(Xraw(:,4).^1));%0.67113
     X(:,end+1) = Xraw(:,1).*Xraw(:,2);
-    X(:,end+1) = (Xraw(:,1).^2).*Xraw(:,2);
-    X(:,end+1) = (Xraw(:,1).^3).*Xraw(:,2);
-    X(:,end+1) = (Xraw(:,1).^4).*Xraw(:,2);
-    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,2));
-    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,2));
-   
-    X(:,end+1) = Xraw(:,1).*Xraw(:,3);
-    X(:,end+1) = (Xraw(:,1).^2).*Xraw(:,3);
-    X(:,end+1) = (Xraw(:,1).^3).*Xraw(:,3);
-    X(:,end+1) = (Xraw(:,1).^4).*Xraw(:,3);
-    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,3));
-    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,3));
-    
-    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,4));
-    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,4));
-    
-    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,5));
-    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,5));
-    
-    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,6));
-    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,6));
-    
-    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,7));
-    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,7));
-    
-    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,8));
-    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,8));
-    
-    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,9));
-    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,9));
-    
-    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,10));
-    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,10));
-    
-    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,11));
-    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,11));
-    
-    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,12));
-    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,12));
-    
-    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,13));
-    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,13));
-    
-    X(:,end+1) = log2(Xraw(:,1).*Xraw(:,14));
-    X(:,end+1) = sqrt(Xraw(:,1).*Xraw(:,14));
-    
-    %%%%%%%%%%%%%%%%%
-    X(:,end+1) = Xraw(:,2);
-    X(:,end+1) = Xraw(:,2).^2;
-    
-    X(:,end+1) = sqrt(Xraw(:,2).*Xraw(:,3));
-    X(:,end+1) = log2(Xraw(:,2).*Xraw(:,3));
-    
-    X(:,end+1) = log2(Xraw(:,2).*Xraw(:,4));
-    X(:,end+1) = sqrt(Xraw(:,2).*Xraw(:,4));
-    
-    X(:,end+1) = log2(Xraw(:,2).*Xraw(:,5));
-    X(:,end+1) = sqrt(Xraw(:,2).*Xraw(:,5));
-    
-    X(:,end+1) = log2(Xraw(:,2).*Xraw(:,6));
-    X(:,end+1) = sqrt(Xraw(:,2).*Xraw(:,6));
-    
-    X(:,end+1) = log2(Xraw(:,2).*Xraw(:,7));
-    X(:,end+1) = sqrt(Xraw(:,2).*Xraw(:,7));
-    
-    X(:,end+1) = log2(Xraw(:,2).*Xraw(:,8));
-    X(:,end+1) = sqrt(Xraw(:,2).*Xraw(:,8));
-    
-    X(:,end+1) = log2(Xraw(:,2).*Xraw(:,9));
-    X(:,end+1) = sqrt(Xraw(:,2).*Xraw(:,9));
-    
-    X(:,end+1) = log2(Xraw(:,2).*Xraw(:,10));
-    X(:,end+1) = sqrt(Xraw(:,2).*Xraw(:,10));
-    
-    X(:,end+1) = log2(Xraw(:,2).*Xraw(:,11));
-    X(:,end+1) = sqrt(Xraw(:,2).*Xraw(:,11));
-    
-    X(:,end+1) = log2(Xraw(:,2).*Xraw(:,12));
-    X(:,end+1) = sqrt(Xraw(:,2).*Xraw(:,12));
-
-    X(:,end+1) = log2(Xraw(:,2).*Xraw(:,13));
-    X(:,end+1) = sqrt(Xraw(:,2).*Xraw(:,13));
-    
-    X(:,end+1) = log2(Xraw(:,2).*Xraw(:,14));
-    X(:,end+1) = sqrt(Xraw(:,2).*Xraw(:,14));
      
-    %%%%%%%%%%%%%%%%%
-    X(:,end+1) = Xraw(:,3);
-    X(:,end+1) = Xraw(:,3).^2;
     
     
-     %%%%%%%%%%%%%%%%%
-    X(:,end+1) = Xraw(:,4);
-    X(:,end+1) = Xraw(:,4).^2;
     
-     %%%%%%%%%%%%%%%%%
-    X(:,end+1) = Xraw(:,5);
-    X(:,end+1) = Xraw(:,5).^2;
     
-     %%%%%%%%%%%%%%%%%
-    X(:,end+1) = Xraw(:,6);
-    X(:,end+1) = Xraw(:,6).^2;
-
-     %%%%%%%%%%%%%%%%%
-    X(:,end+1) = Xraw(:,7);
-    X(:,end+1) = Xraw(:,7).^2;
     
-     %%%%%%%%%%%%%%%%%
-    X(:,end+1) = Xraw(:,8);
-    X(:,end+1) = Xraw(:,8).^2;
     
-     %%%%%%%%%%%%%%%%%
-    X(:,end+1) = Xraw(:,9);
-    X(:,end+1) = Xraw(:,9).^2;
     
-     %%%%%%%%%%%%%%%%%
-    X(:,end+1) = Xraw(:,10);
-    X(:,end+1) = Xraw(:,10).^2;
-    
-     %%%%%%%%%%%%%%%%%
-    X(:,end+1) = Xraw(:,11);
-    X(:,end+1) = Xraw(:,11).^2;
-    
-    %%%%%%%%%%%%%%%%%
-    X(:,end+1) = Xraw(:,12);
-    X(:,end+1) = Xraw(:,12).^2;
-    
-     %%%%%%%%%%%%%%%%%
-    X(:,end+1) = Xraw(:,13);
-    X(:,end+1) = Xraw(:,13).^2;
-    
-     %%%%%%%%%%%%%%%%%
-    X(:,end+1) = Xraw(:,14);
-    X(:,end+1) = Xraw(:,14).^2;
 else
     X = varargin{2};
 end
@@ -181,9 +74,9 @@ bestErrorSoFar = learnFunction(X,Y)
 
     
 for first = 1:6 %1:size(Xraw,2)
-    disp(['stay tuned first: ', num2str(first), ' of: ', num2str(size(Xraw,2))])
+    %disp(['stay tuned first: ', num2str(first), ' of: ', num2str(size(Xraw,2))])
     for second = 2:14%1:size(Xraw,2)
-    disp(['stay tuned second: ', num2str(second), ' of: ', num2str(size(Xraw,2))])
+    %disp(['stay tuned second: ', num2str(second), ' of: ', num2str(size(Xraw,2))])
     for powerFirst = 1:3 %1:3
     for powerSecond = 0:2 %0:2
     tz = (Xraw(:,first).^powerFirst) .* Xraw(:,second).^powerSecond;
@@ -224,7 +117,7 @@ for first = 1:6 %1:size(Xraw,2)
             
             [errorTmp, bestWTmp, denormParamY] = learnFunction(Xtmp,Y);
             if(bestErrorSoFar-errorTmp > threshold2)
-               disp(['Mind Blowing diff of:', num2str(bestErrorSoFar-errorTmp)])   
+               %disp(['Mind Blowing diff of:', num2str(bestErrorSoFar-errorTmp)])   
                switch index
                 case 1
                     disp(['X(:,end+1) = (Xraw(:,',num2str(first),').^',num2str(powerFirst),').*(Xraw(:,',num2str(second),').^',num2str(powerSecond),');%',num2str(value)])
