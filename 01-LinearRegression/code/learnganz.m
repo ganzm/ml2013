@@ -86,9 +86,9 @@ function [X13] = extractFeature13(Xraw)
         X13(:,groupIndex,1) = newFeature;
         
         % add other features
-        X13 = addFeature(X13, featureMask, groupIndex, Xraw(:,11));
-        X13 = addFeature(X13, featureMask, groupIndex, Xraw(:,12));
-        X13 = addFeature(X13, featureMask, groupIndex, Xraw(:,9));
+        X13 = addFeature(X13, featureMask, groupIndex, Xraw(:,5) .* Xraw(:,10));
+        X13 = addFeature(X13, featureMask, groupIndex, Xraw(:,4) .* Xraw(:,10));
+        
     end
 end
 
