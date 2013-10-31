@@ -9,10 +9,10 @@ validationData = csvread('../testdata/validation.csv');
 Xraw = trainingData(:,1:14);
 Y = trainingData(:,15);
 
-X13 =  extractFeatureGanz(Xraw);
+X13 =  extractFeature13(Xraw);
 
-X13t =  extractFeatureGanz(testingData);
-X13v =  extractFeatureGanz(validationData);
+X13t =  extractFeature13(testingData);
+X13v =  extractFeature13(validationData);
 
 %% perform crossvalidation
 kValues = logspace(-6, 2, 50); % hyper parameter
@@ -64,7 +64,7 @@ y = zeros(size(X13,1),1);
     end
 end
 
-function [X13] = extractFeatureGanz(Xraw)
+function [X13] = extractFeature13(Xraw)
     X13 = [];
     group13 = groupBy(Xraw(:,13));
     for groupIndex=1:length(group13)
