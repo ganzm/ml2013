@@ -20,7 +20,7 @@ end
 %% Find best parameters
 [~, minIndex] = min(meanErrs);
 bestK = kValues(minIndex);
-[bestW, ] = trainData(Xnorm, Ynorm, bestK);
+[bestW, ~] = trainData(Xnorm, Ynorm, bestK);
 
 % estimate error CVRMSE
 Y_trainresult = Xnorm * bestW;
