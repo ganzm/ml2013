@@ -36,7 +36,7 @@ This project was performed using Matlab only. To reproduce test results presente
 
 \begin{itemize}
 \item Unzip the sourcefolder containing Matlab code and data sets
-\item Run learn.m to optain both files testresult.csv and validationresult.csv
+\item Run the function learn() located in learn.m to obtain both files \textit{testresult.csv} and \textit{validationresult.csv}
 \end{itemize}
 
 \section{Tools}
@@ -47,15 +47,27 @@ As stated in Section \nameref{sec:exp-protocl} the only tool which is needed is 
 \section{Algorithm}
 %Describe the algorithm you used for regression (e.g. ordinary least squares, ridge regression, $\ldots$)
 
-The algorithm performs the following steps an can be started by running learn.m
+The algorithm performs the following steps an can be started by running learn().
 
-\begin{itemize}
-\item Read csv file
-\item Normalize training input and result data
-\item create feature vectors
-\item perform cross validation and obtain $\lambda$ and weight vector $w$
-\item generate validation and testing output
-\end{itemize}
+\paragraph{Read csv files}
+All 3 files read in a first step.
+
+\paragraph{Remove outliers}
+We explicitly remove training data which we have detected to affect our learning algorithm in a negative way.
+
+\paragraph{Split training set}
+Training data are split into subsets so that each of them contains the measurement value for one specific \textbf{L2 Cache size}.
+
+\paragraph{Choose features}
+In a next step the relevant features are selected for each subset of the data.
+
+\paragraph{Crossvalidation}
+For each of the subset we use crossvalidation to determine the optimal parameter $\lambda$ and weight vector $w$ to use for ridge regression.
+
+As a result of this step we get an optimal $\lambda$ and $w$ for each observed \textbf{L2 Cache size} value.
+
+\paragraph{Compute result}
+To estimate the values for the test and the validation set we check the cache size of each individual record and then choose which weight vector to apply.
 
 \subsection{Which part of the code does what}
 
@@ -73,15 +85,26 @@ $ w = \left(X^T X + \lambda I   \right)^{-1} X^T y$
 
 As a result we obtain the weight vector $w$ and an the RMSE.
 
-\paragraph{extractFeatures.m}
+\paragraph{crossvalidation.m}
 
-This is the part of the code where features are created and transformed.
-
+Performns crossvalidation to determin the optimal parameter $\lambda$.
 
 \section{Features}
+
+As mentioned the training set was split according to \textbf{L2 Cache} sizes. We then observed that the correlation between the resulting delay values and the \textbf{depth} feature was very good. Similar behaviour was observed choosing the following to more features
+
+\begin{itemize}
+\item  \textbf{LSQ size} $\cdot$  \textbf{branches allowed}
+
+\item \textbf{RF size} $\cdot$ \textbf{branches allowed}
+\end{itemize}
+
+By splitting the training set into subsets of \textbf{L2 Cache size} we achieve quite good results with only 3 very simple features.
+
+
+
 % Did you construct any new features? What feature transforms did you use?
 
-\textbf{TODO}
 
 \subsection{Find good features}
 \label{subsec:findgoodfeatures}
@@ -89,9 +112,9 @@ This is the part of the code where features are created and transformed.
 We had different approaches to find good featues:
 
 \begin{itemize}
-	\item \textbf{I feel lucky, give it a shot:} Simply plotting each feature and some handcrafted combinations against the delay in order to see if and how they correlate. This was an annoying task, since it took long time and at the end it revealed only very few features.
+	\item \textbf{I'm feeling lucky} Simply plotting each feature and some handcrafted combinations against the delay in order to see if and how they correlate. This was an annoying task, since it took long time and at the end it revealed only very few features.
 
-	\item \textbf{Brute force automation:} Create feature combinations automatically and just look at the correlation matrices. This was easy to compute and it took only a few seconds to verify the results (See listing below). With this method we obtained a lot more useful features and could reduce significantly the prediction error.
+	\item \textbf{Brute force automation:} Create feature combinations automatically and just look at the correlation matrices. This was easy to compute and it took only a few seconds to verify the results (See listing below). With this method we obtained a lot more useful features.
 	\begin{center}
 	\begin{lstlisting} 
 	x = trainingData(:,1:14);
@@ -109,36 +132,16 @@ We had different approaches to find good featues:
 	Figure 1: Code Sample to find correlation
 	\end{center}
 
-	\item \textbf{Fredo - style - greedy}
 \end{itemize}
-
-
-
-\section{Parameters}
-%How did you find the parameters of your model? (What parameters have you searched over, cross validation procedure, $\ldots$)
-
-\subsection{Parameter $\lambda$}
-
-By iteratively applying cross validation, the best parameter $\lambda$ is determined as seen in Figure 2. We chose an arbitrary number of parameters (50 in this sample) and apply cross validation. The parameter which yields the smallest error is then chosen.
-
-\begin{center}
-\begin{lstlisting} 
-% perform crossvalidation
-lambdaValues = logspace(-6, 2, 50); % hyper parameter
-meanErrs = zeros(size(lambdaValues));
-
-for i=1:size(lambdaValues,2)
-    [meanErrs(i), W, errorTest] = crossvalidation(Xnorm, Ynorm, lambdaValues(i));
-end
-\end{lstlisting}
-Figure 2: Code Sample to find best $\lambda$
-\end{center}
-
 
 \section{Lessons Learned} 
 Most of the time spent for the project was used to search for good features. At the start of the project  it was mostly unclear how to find such features. Getting a test score which meets our expectation by simply try and error features did not yield the expected result.
 
-We later automated our search for good features by applying the methods described in \nameref{subsec:findgoodfeatures}. This led to much better results.
+We soon automated our search for good features by correlating the resulting delay vector to any kinds of transformations of our input data.
+
+While observing plots we found out that the \textbf{Depth} feature looks very linear when considering \textbf{L2 Cache size}. This lead us to the solution we are proposing.
+
+All in all we learned that machine learning requires quite a bit of creativity.
 
 %What other algorithms, tools or methods did you try out that didn't work well?
 %Why do you think they performed worse than what you used for your final submission?
