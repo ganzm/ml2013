@@ -1,4 +1,4 @@
-function [] = learnganz()
+function [] = learn()
 
 %% read raw csv data
 testingData = csvread('../testdata/testing.csv');
