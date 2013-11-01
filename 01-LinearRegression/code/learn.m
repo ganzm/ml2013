@@ -5,7 +5,7 @@ testingData = csvread('../testdata/testing.csv');
 trainingData = csvread('../testdata/training.csv');
 validationData = csvread('../testdata/validation.csv');
 
-% remove bad feature
+% remove bad features
 trainingData(187,:) = [];
 trainingData(188,:) = [];
 
@@ -13,38 +13,40 @@ trainingData(188,:) = [];
 Xraw = trainingData(:,1:14);
 Y = trainingData(:,15);
 
-X13 =  extractFeature13(Xraw);
-
-X13t =  extractFeature13(testingData);
-X13v =  extractFeature13(validationData);
+% extract training set
+x =  extractFeatures(Xraw);
+% extract test set
+xt =  extractFeatures(testingData);
+% extract validation set
+xv =  extractFeatures(validationData);
 
 %% perform crossvalidation
-kValues = logspace(-6, 2, 50); % hyper parameter
-numX13 = size(X13,2);
 
+kValues = logspace(-6, 2, 50); % hyper parameter
+numX13 = size(x,2);
 for j=1:numX13
-    X13j = X13(:,j,:);
-    X13j = reshape(X13j, size(X13j,1),size(X13j,3));
+    xj = x(:,j,:);
+    xj = reshape(xj, size(xj,1),size(xj,3));
     Yj = Y;
     
-    zeroIndices = (X13j(:,1) == 0);
-    X13j(zeroIndices,:) = [];
+    zeroIndices = (xj(:,1) == 0);
+    xj(zeroIndices,:) = [];
     Yj(zeroIndices) = [];
 
     meanErrs = zeros(size(kValues));
     for i=1:size(kValues,2)
-        [meanErrs(i), ~, ~] = crossvalidation(X13j, Yj, kValues(i));
+        [meanErrs(i), ~, ~] = crossvalidation(xj, Yj, kValues(i));
     end
 
     [~, bestKIndex] = min(meanErrs);
-    [w, ~] = trainData(X13j, Yj, kValues(bestKIndex));
+    [w, ~] = trainData(xj, Yj, kValues(bestKIndex));
     
     weight{j} = w;
 end
 
-Ytrain = estimateValues(X13, weight);
-Ytest = estimateValues(X13t, weight);
-Yvalidation = estimateValues(X13v, weight);
+Ytrain = estimateValues(x, weight);
+Ytest = estimateValues(xt, weight);
+Yvalidation = estimateValues(xv, weight);
 
 %% caluculate CVRMSE
 sse = sum((Y -  Ytrain).^2); % sum square error
@@ -53,27 +55,27 @@ error = error/mean(Y);
     
 disp(['CVRMSE: ' num2str(error)]);
 
-writeOutput( 'out-test.txt', Ytest);
-writeOutput( 'out-validation.txt', Yvalidation);
-
+writeOutput( 'testresult.csv', Ytest);
+writeOutput( 'validationresult.csv', Yvalidation);
 
 end
 
 %% estimate Values
-function [y] = estimateValues(X13, w)
+function [y] = estimateValues(x, w)
 
-    y = zeros(size(X13,1),1);
+    y = zeros(size(x,1),1);
 
-    for i = 1:size(X13,2)
-        X13i = X13(:,i,:);
-        X13i = reshape(X13i, size(X13i,1),size(X13i,3));
+    for i = 1:size(x,2)
+        xi = x(:,i,:);
+        xi = reshape(xi, size(xi,1),size(xi,3));
         
-        y = y + (X13i * w{i});
+        y = y + (xi * w{i});
     end
 end
 
-function [X13] = extractFeature13(Xraw)
-    X13 = [];
+function [X] = extractFeatures(Xraw)
+    X = [];
+    
     group13 = groupBy(Xraw(:,13));
     for groupIndex=1:length(group13)
         temp = group13(groupIndex);
@@ -83,11 +85,11 @@ function [X13] = extractFeature13(Xraw)
         
         % add basis feature
         newFeature(featureMask) = 0;
-        X13(:,groupIndex,1) = newFeature;
+        X(:,groupIndex,1) = newFeature;
         
         % add other features
-        X13 = addFeature(X13, featureMask, groupIndex, Xraw(:,5) .* Xraw(:,10));
-        X13 = addFeature(X13, featureMask, groupIndex, Xraw(:,4) .* Xraw(:,10));
+        X = addFeature(X, featureMask, groupIndex, Xraw(:,5) .* Xraw(:,10));
+        X = addFeature(X, featureMask, groupIndex, Xraw(:,4) .* Xraw(:,10));
         
     end
 end
