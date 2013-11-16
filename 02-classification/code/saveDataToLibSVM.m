@@ -16,6 +16,7 @@ validationDataRaw = csvread('validation.csv');
 X_training = trainingDataRaw(:,1:end-1);
 Y_training = trainingDataRaw(:,end);
 
+
 %% scale training data and do the same for testing and validation (same scaling factor)
 minimums = min(X_training, [], 1);
 ranges = max(X_training, [], 1) - minimums;
@@ -25,6 +26,9 @@ X_validation = (validationDataRaw - repmat(minimums, size(validationDataRaw, 1),
 
 
 %% ATTENTION TO CHECK what is better 0:1 or -1:1
+
+
+
 
 %% split Training into Training_Test and Tranining_Train (Ratio arround 66 and 33)
 indices = crossvalind('Kfold',Y_training,3);
