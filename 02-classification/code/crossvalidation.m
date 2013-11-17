@@ -7,10 +7,17 @@ while true
     if(first)
         first = false;
        
-        stepSize = 2;
-        log2c_list = -4:stepSize:6;
-        log2g_list = -4:stepSize:6;
+        % big
+        stepSize = 5;
+        log2c_list = -20:stepSize:20;
+        log2g_list = -20:stepSize:20;
         
+        %medium
+        %stepSize = 2;
+        %log2c_list = -4:stepSize:6;
+        %log2g_list = -4:stepSize:6;
+        
+        % small
         %stepSize = 0.2;
         %log2c_list = 1.8:stepSize:3.2;
         %log2g_list = 4.3:stepSize:4.7;
