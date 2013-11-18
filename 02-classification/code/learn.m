@@ -1,77 +1,34 @@
-%% clean up & set up
-clear
-close all
-clc
-addpath('../toolbox/libsvm-3.17/matlab/');
-addpath('./helperMethod');
+%% Parameter Description
+%  1 = mean intensity 
+%  2 = mean of gradient values
+%  3 = variance of gradient values
+%  ... total of neighborhoods = 9 (each of those has the above 3 values)
+% 28 = 1 = normal, -1 = disease (Output)
 
-%% load from libSvm
-[Y_training_training, X_training_training] = libsvmread('../data/disease.train_train');
-[Y_training_testing, X_training_testing] = libsvmread('../data/disease.train_testing');
-[Y_testing, X_testing] = libsvmread('../data/disease.testing');
-[Y_validation, X_validation] = libsvmread('../data/disease.validation');
+%% load data
+training_data = csvread('data/origin/training.csv');
+validation_data = csvread('data/origin/validation.csv');
+testing_data = csvread('data/origin/testing.csv');
+nSamples = size(training_data,1);
 
+%% train
+X_train = training_data(:, 1:27);
+Y_train = training_data(:, 28); % expected solution
 
-%% look into the data manually
-%plotPerFeatureCount(X_training_training,Y_training_training);
-%plotPerFeatureCount(X_training_training(:,1),Y_training_training(:,1));
+%% find solution
+SVMstruct = svmtrain(X_train,Y_train,'Kernel_Function','rbf', 'rbf_sigma', 0.5);
 
-plotPerFeatureCount([X_training_training; X_training_testing],[Y_training_training; Y_training_testing]);
+%% evaluate train solution
+[ce, nWrongMatches] = classificationError(svmclassify(SVMstruct,X_train), Y_train)
 
+%% compute validation solution
+X_validation = validation_data(:,1:27);
+Y_validation = 	svmclassify(SVMstruct,X_validation);
 
-%%
-%plotPerFeatureCount(X_training_testing(:,27),Y_training_testing(:,1));
+writeOutput('data/results/validation_predicted.txt', Y_validation);
 
+%% compute testing solution
+X_testing = testing_data(:,1:27);
+Y_testing = svmclassify(SVMstruct,X_testing);
 
-%% Cross Validation for finding best C and gamma
-[bestc, bestg] = crossvalidation(Y_training_training, X_training_training, true);
-% 0.248:
-%bestc = 1.4142
-%bestg = 22.6274
-% CV scale1: best log2c:0.5 best log2g:4.5 accuracy:92.8497%
-
-
-
-%% Do svmtrain with best coefficiants
-%cmdBest = ['-q  -w1 1 -w-1 5 -c ', num2str(bestc), ' -g ', num2str(bestg)];
-cmdBest = ['-q  -w1 1 -w-1 500 -c ', num2str(bestc), ' -g ', num2str(bestg)];
-model = svmtrain(Y_training_training, X_training_training, cmdBest);
-
-%% predict on known(training) data
-[predicted_label_training_training, accuracy_train, dec_values_train] = svmpredict(Y_training_training, X_training_training, model);
-
-%% predict on known(testing) data
-[predicted_label_training_testing, accuracy_test, dec_values_test] = svmpredict(Y_training_testing, X_training_testing, model);
-
-
-%% show confusion matrix
-%showConfusionMatrix(Y_training_training, predicted_label_training_training);
-showConfusionMatrix(Y_training_testing, predicted_label_training_testing);
-
-
-%% analyse what went wrong
-% Mask wrong predicted
-mask = predicted_label_training_testing-Y_training_testing ~= 0;
-% All wrong ones
-wrongOnes = [full(X_training_testing(mask,:)), Y_training_testing(mask), predicted_label_training_testing(mask)];
-%for i = 1:size(X_training_testing,2)
-%    disp(num2str(i))
-%    feature_i = wrongOnes(:,[i,end-1,end]);
-%    feature_i(feature_i(:,1) > 0.75,:)
-%end
-
-
-
-%% predict unknown Data
-[predicted_label_testing, ~, ~] = svmpredict(Y_testing, X_testing, model, '-q');
-[predicted_label_validation, ~, ~] = svmpredict(Y_validation, X_validation, model,'-q');
-
-%% to think about: looks ok...
-blub = full(X_validation);
-predicted_label_validation(blub(:,27) > 0.5, :)
-
-
-%% write output
-writeOutput('../data/results/testResult.csv', predicted_label_testing);
-writeOutput('../data/results/validationResult.csv', predicted_label_validation);
-
+writeOutput('data/results/testing_predicted.txt', Y_testing);
