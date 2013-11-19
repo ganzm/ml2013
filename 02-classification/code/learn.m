@@ -11,16 +11,17 @@ validation_data = csvread('data/origin/validation.csv');
 testing_data = csvread('data/origin/testing.csv');
 nSamples = size(training_data,1);
 
-%% train
+%% training data
 X_train = training_data(:, 1:27);
 Y_train = training_data(:, 28); % expected solution
 
-%% find solution
-SVMstruct = svmtrain(X_train,Y_train,'Kernel_Function','rbf', 'rbf_sigma', 0.5);
+%% parameters found with cross validation
+c_best = 1.1;
+sigma_best = 0.553266;
 
-%% evaluate train solution
-[ce, nWrongMatches] = classificationError(svmclassify(SVMstruct,X_train), Y_train)
-
+%% compute svm with all values
+SVMstruct = svmtrain(X_train,Y_train,'Kernel_Function', 'rbf', 'rbf_sigma', sigma_best, 'boxconstraint', c_best);
+    
 %% compute validation solution
 X_validation = validation_data(:,1:27);
 Y_validation = 	svmclassify(SVMstruct,X_validation);
