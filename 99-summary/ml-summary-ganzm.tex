@@ -1,0 +1,474 @@
+\documentclass[11pt,conference]{IEEEtran}
+
+%\usepackage{times}
+%\usepackage{balance}
+\usepackage{url}
+\usepackage{graphicx}	% For figure environment
+\usepackage[center]{subfigure}
+\usepackage{amssymb}	% For mathematical figures like \mathbb{R}
+\usepackage{amsmath}
+\usepackage{framed}
+\usepackage{epstopdf}
+\usepackage{geometry}
+\geometry{a4paper, top=6mm, left=7mm, right=7mm, bottom=8mm,
+headsep=0mm, footskip=0mm}
+
+\begin{document}
+\title{ML - Summary 2013}
+
+
+% Exame summary:
+% Two A4-pages (i.e. one A4-sheet of paper), either handwritten or 11 point minimum font size.
+
+\section{Varia}
+
+Generalisation/Prediction Error: Expected \#mistakes on unkown data
+
+\section{Regression}
+
+Problem: $ w^* =  arg \min \limits_w \sum \limits_{i=1}^n \left(y_i - w^Tx_i\right)^2 + \lambda ||w||_2^2$
+
+\section{Crossvalidation}
+
+\section{SVMs}
+
+\section{Bayesian Learning}
+
+
+
+\maketitle
+
+
+%% Memo - ignore this
+
+\section{PCA - Principal Component Analysis}
+
+High dimensional data is projected onto a low dimensional subspace while maximizing variance.
+
+\begin{itemize}
+\item project $x$ to $\tilde{x}$ and minimize error $|| x_n - ~x_n ||_2$
+\item variance of projected data is maximized
+\end{itemize}
+
+\subsubsection{Algorithm}
+
+\begin{itemize}
+% \item $ X = [x_1,x_2,...x_n]$
+\item Covariance $\Sigma = \frac{1}{N} \cdot (  X - M ) ( X - M )^T$
+\begin{itemize}
+\item $Cov(X_i, X_i) = Var(X_i)$
+\item Symmetric: $ Cov(X_i,X_j) = Cov(X_j, X_i)$
+\end{itemize}
+\item $Eig(\Sigma) = U \cdot \Lambda \cdot U^T$
+% \item Select first k orthonormal vectors from U and get projection matrix. 
+\item $Z = U_k^T \cdot X$ where $Z$ is dim reduced.
+
+\end{itemize}
+
+\subsubsection{Deduction} 
+Var. of proj. data $Z$ is maximal if cov.
+
+$\Sigma_Z = A^T \Sigma_X A = \frac{1}{n} (A^TX - \bar{X})(A^TX - \bar{X})^T $.
+
+By choosing $A = U$ where $\Sigma_X = U \Lambda U^T$ the covariance $\Sigma_Z$ becomes diagonal.
+
+%\subsubsection{Applications} 
+%Compress $X$ with $U_k$ principal components. 
+%Project X to a k-dimensional subspace with $Z = U_k \cdot X$
+
+\section{SVD $M = U D V^T$}
+
+\begin{itemize}
+
+%% Dimensions of svd matrices
+%\item Dimensions (M: $m \times n$)
+%	\begin{itemize}
+%	\item U: $m \times m$
+%	\item D: $m \times n$
+%	\item V: $n \times n$
+%\end{itemize}
+
+\item Rank of $M$: Number of singular values
+\item Null space: right columns of $V$ where $\sigma_i$ are 0
+\item Range of $M$: left columns of $U$ where $\sigma_i$ are $\neq 0$
+\item Pseudo-Inverse: $M^+ = U D^+ V$, where $D^+ = D$ with inverted singular values
+
+\end{itemize}
+
+\subsubsection{SVD as a sum}
+%$ M = \sum_{i=1}^{N}{ U_i \cdot \Sigma_i \cdot V^T_i } %$
+
+$ M_k = \sum_{i=1}^{k} {U_i \cdot \Sigma_i \cdot V^T_i} $
+ 
+\textbf{Minimize L2 Norm:}
+SVD solves $|| M - B ||_2 = || M - M_k ||_2$
+for euclidean matrix norms
+
+\subsection{Important} Eigenvectors of $MM^T$ and $M^TM$:
+
+
+$MM^T = UDV^T VDU^T = UD (V^T V)DU^T = U D^2 U^T$
+$M^TM =  ....  = V D^2 V^T$
+ 
+If $M = M^T$ (symmetric and real) then
+$S = U \cdot D \cdot U^T$
+Where $U$ has columns of Eigenvectors
+
+
+\section{Linear Algebra}
+\subsection{Vector Norms}
+are positive scalable, full-fill the triangular inequality, norm of 0 is 0
+
+\subsubsection{p-Norm}
+$ || x ||_p = \left( \sum_{i=1}^{n}{|x_i|^p} \right)^{\frac{1}{p}}$
+
+\subsubsection{Euclidean Norm} 
+p-Norm where $p=2$
+
+\subsubsection{1-Norm}
+Manhattan-Norm
+$ ||x||_1 = \sum_{i=1}^{n}{|x_i|} $
+
+\subsubsection{Zero-Norm} 
+counts the number of non-zero entries.
+
+\subsection{Matrix Norms}
+
+\subsubsection{Nuclear Norm}
+
+$|| . ||_*$ sum of singular values
+
+\subsubsection{Frobenious-Norm}
+$sqrt(sum(sum(A.^2)))$
+
+\subsubsection{Spectral Norm} 
+Largest singular value if square 
+
+$||A||_2 = \sigma_{max}(A)$ 
+~~Is equals to the 2-Norm
+
+\subsubsection{Induced Matrix Norms}
+$ ||A|| = max \left( \frac{ ||Ax|| }{ ||x|| } \right)$
+
+\subsection{Orthogonality}
+
+\subsubsection{Vectors} 
+
+inner (scalar) product $\langle ~.~,~.~ \rangle = 0$
+
+\subsubsection{Matrices} 
+
+quadratic, values are in $\mathbb{R}$, $Q^T = Q^{-1}$
+
+\subsubsection{Functions}
+
+$f(x)$ orth. to $g(x)$ if $0 = \int f(x) g(x) dx $
+
+\subsubsection{Coherence}
+
+$m(U)= max_{i,j:i\neq j} | u_i^T u_j|$
+
+\subsubsection{Convexity}
+
+$f(\theta x + (1-\theta)y) \leq \theta f(x) + (1-\theta) f(y)$
+
+\section{Differentials}
+
+Chain rule: $ f(g(x)) \frac{d}{dx} = f'(g(x)) \cdot g'(x)$
+
+\subsection{Vector/Matrix differentiation}
+
+$\frac{d}{dx} f(x) = \left[ \frac{\partial f }{\partial x_1} ,...,\frac{\partial f}{\partial x_n} \right]$, $\frac{d}{dx}(b^T x) = \frac{d}{dx} (x^T b) = b$,$\frac{d}{dx}(x^T x) = \frac{d}{dx} (x^T x) = 2x$,$\frac{d}{dx}(x^T A x) = (A^T + A) x$
+
+\section{Probability}
+
+\subsection{Notation}
+$Pr\lbrace ... \rbrace$ Probability of an event
+
+$P(x)$ Probability mass function (Verteilungsfunktion)
+
+$p(x)$ Probability density function (Dichtefunktion)
+
+$P(X,Y) = P(X|Y) \cdot P(Y) = P(Y|X) \cdot P(X)$
+
+Bayes: $P(X|Y) = \frac{P(Y|X)\cdot P(X)}{P(Y)}$
+
+
+\section{Collaborative Filtering with SVD}
+Init/Set values to predict in $M$ to be the avg value.
+
+$M = U \cdot D \cdot V^T$
+
+U = Row-to-Concept affinity
+
+V = Column-to-Concept affinity
+
+D = expressiveness of each concept in the data
+
+\subsection{Add new row (User Bob)}
+
+$M_{Bob} = U_{Bob} \cdot D \cdot V^T => M_{Bob} \cdot V \cdot D^-1 = U_{Bob}$
+
+
+\section{K-Means $X = U \cdot Z$}
+
+%\begin{itemize}
+%\item X: $D \times N$
+%\item U: $D \times k$
+%\item Z: $k \times N$
+%\end{itemize}
+
+\subsection{Hard Assignment}
+
+Minimize cost function:
+$J(U,Z) = || X - UZ ||^2_f = \sum_{n=1}^{N}{\sum_{k=1}^{K}{z_{k,n} ||x_n - u_k||_2^2}}$
+
+
+Equ. holds only iff $z_{k,n}$ is boolean and $sum(Z_n) = 1$
+
+\subsubsection{Algorithm}
+
+Step 1: Cluster Assignment
+Hard-Assign to Cluster where
+$ || X_n - U_i ||^2_2$ is minimal
+
+\footnotesize
+
+$ k^*(x_n) = argmin \lbrace ||x_n-u_1||_2^2,...,||x_n-u_k||_2^2,...,||x_n-u_K||_2^2 \rbrace$
+\normalsize
+
+Step 2: Centroid update $u_k$: 
+Sum up data points associated to k-th centroid and average.
+
+$u_k = \dfrac{\sum_{n=1}^N{z_{k,n} \cdot x_n}}{\sum_{n=1}^N{z_{k,n}}} $
+
+\subsubsection{Convergence K-Means}
+
+Step 1 minimizes J because it sets $z_k,$ where $ || X_n - U_i ||^2_2$ is minimal
+
+Step 2 minimizes J because $u_k = \dfrac{\sum_{n=1}^N{z_{k,n} \cdot x_n}}{\sum_{n=1}^N{z_{k,n}}} $ is the derivative of $J$ with respect to $u_k$:
+
+$\dfrac{\partial{J}}{\partial{u_k}} = \dfrac{\partial \sum_{n=1}^N{z_{k,n}} ||x_n - u_k||_2^2}{\partial{u_k}} = \sum_{n=1}^N{z_{k,n}} {\left[  	\dfrac{\partial{(x_{1,n}-u_{1,k})^2}} 	{\partial u_{1,k}}, ...,\dfrac{\partial{(x_{d,n}-u_{d,k})^2}} 	{\partial u_{d,k}}  \right]}^T = -2 \sum_{n=1}^N{z_{k,n}(x_n - u_k)} => $  solve for $u_k$
+$, \dfrac{\partial{J^2}}{u_k^2} > 0 => J$ does not increase after centroid update. 
+
+\subsection{Estimate K - $\kappa(.)$ num. free param.}
+\subsubsection{AIC} 
+$= - ln p(X|.) +\kappa(U,Z)$
+
+\subsubsection{BIC} 
+$= - ln p(X|.) + \frac{1}{2} \kappa(U,Z) ln(N)$
+
+\subsection{EM with GMM Gaussian Mixture Model}
+\begin{itemize}
+\item $p(x) = \sum_{k=1}^{K}{\pi_k~~ p(x|\theta_k)}$
+\item $\sum_{k=1}^K{\pi_k}=1$ Each column sums up to 1
+\item Gaussian Distr.: $\mu$: Expectation, $\sigma^2 = variance$, $\sigma = stddev$
+
+\item introduce latent variable $\gamma$ in the E-Step and marginalize away in the M-Step
+\item $\gamma(z_{k,n})$ is the prob. of $x_n$ beeing ass. to cluster $k$
+
+\end{itemize}
+
+\subsubsection{E-Step} Evaluate Responsibilities
+
+$\gamma(z_{k,n}):=\mathbb{E}[z_{k,n}] = \frac{\pi_k \mathcal{N}(x_n|\mu_k, \Sigma_k)}{\sum_j \pi_j \mathcal{N}(x_n|\mu_j, \Sigma_j)}$
+
+
+\subsubsection{M-Step} Re-Estimate model parameters
+
+$N_k = \sum_{n=1}^N{\gamma(z_{k,n})}$
+
+$u_k^{new} = \frac{1}{N_k} \sum_{n=1}^N{\gamma(z_{k,n})x_n}$, $\pi_k^{new}= \frac{N_k}{N}$
+
+
+\section{Non-negative matrix factorisation}
+
+$X \in \mathbb{R+}^{D}$ 
+ 
+Similar to k-means:
+\begin{enumerate}
+
+
+\item Init $U$, $Z$ (random positive values)
+\item Iterate
+\item Update $U$:
+$\tilde{X} = UZ$
+$X = UZ => XZ' = UZZ'$
+$XZ'/UZZ'$ is a coefficient matrix in $\mathbb{R^+}$ 
+
+
+$u_dk_{new} = u_dk \cdot ( (XZ')/(UZZ') )$
+
+\item Update $Z$: $X = UZ$;  $U'X = U'UZ$; $z_dk_{new} <- z_dk * ( (UX)/(U'UZ) )$
+
+\subsection{Deduction}
+
+${\min\limits_{U,Z}} ~~ J(U,Z) = \frac{1}{2} ||X-UZ||_F^2 = \frac{1}{2} tr\left( (X-UZ)(X-UZ)^T \right)$
+
+Lagrangian $L(U,Z,\alpha, \beta)=J(U,Z)-tr(\alpha U^T) - tr(\beta Z^T)$
+
+where tr(.) is the trace of a matrix
+
+\end{enumerate}
+\subsection{Kullback-Leibler Divergence}
+$D_{KL}(P||Q) = \sum_{x \in X} P(x) \log \left( \dfrac{P(x)}{Q(x)}\right)$
+KL-divergence of $X$ and $UZ$ for pLSI:
+$\min\limits_{U,Z}\sum_{d=1}^D\sum_{n=1}^N x_{dn}\log\left(\dfrac{x_{dn}}{(UZ)_{dn}}\right)$ s.t. $ \sum_{d=1}^D u_{dk} =1 \forall k, \sum_{d,n}z_{kn}=1, u_{dk}\geq0,z_{ḱn}\geq0$
+\section{Role Based Access control - RBAC}
+Model with $\beta = (p\left\lbrace u_{dk}=0\right\rbrace)^{D \times K}$
+
+SAC: $p(X|\beta,Z) = \prod\limits_{n,d}(1-\beta_{dk_n})^{x_{dn}}(\beta_{dk_n})^{(1-x_{dn})}$
+
+MAC: $p(X|\beta,Z) = \prod\limits_{n,d}(1-\prod\limits_k \beta_{dk}^{z_{kn}})^{x_{dn}}(\prod\limits_k\beta_{dk}^{z_{kn}})^{1-x_{dn}}$
+
+Coverage:$Cov:=\dfrac{|\left\lbrace(i,j)|\hat{x}_{i,j}=x_{i,j}=1\right\rbrace|}{|\left\lbrace(i,j)|x_{i,j}=1 \right\rbrace|}$
+
+Deviating Ones:$d1:=\dfrac{|\left\lbrace(i,j)|\hat{x}_{i,j}=x_{i,j}=1,x_{i,j}=0\right\rbrace|}{|\left\lbrace(i,j)|x_{i,j}=1 \right\rbrace|}$
+
+Deviating Zeros:$d0:=\dfrac{|\left\lbrace(i,j)|\hat{x}_{i,j}=x_{i,j}=0,x_{i,j}=1\right\rbrace|}{|\left\lbrace(i,j)|x_{i,j}=0 \right\rbrace|}$
+
+\section{Compressive Sensing}
+
+\begin{itemize}
+\item $x$ is a D-Dimensional measurement
+\item $x$ is sparse in some orthonormal basis $U$, $x = U \cdot z$
+\item instead of saving $x$ we save $y$ with dim. $M<<D$
+\item define any orthonormal basis $U$ $(D \times D)$
+\item define W $(M \times D)$
+\item $y = Wx = WUz := \Theta z$
+
+\item $\Theta = W \cdot U$
+\item Store y: $Wx => y$
+\item Restore x: $y = \Theta \cdot z$, find most sparse matrix $z$
+	\begin{itemize}
+	\item arg min z :  $||z||_0$  s.t.  $\Theta z  = y$ (matching persuit)
+	\item $x = U \cdot z$
+  	\end{itemize}
+\end{itemize}
+
+\section{Sparse Coding}
+\subsubsection{Matching Pursuit}
+
+Exact Recovery Conditions
+
+$K< \frac{1}{2} \left(1+\frac{1}{m(U)}\right)$
+
+where Coherence:  $m(U)= {max  \atop i,j:i \neq j} ~~ |u_i^T u_j|$
+
+\subsubsection{Overcomplete Dicts.}
+\begin{itemize}
+\item increasing overcompleteness
+\item increases (potentially) to a certain point sparse coding (gets sparser)
+\item increases linear dependence between atoms
+\item Solve: $arg min ||z||_0 s.t. x = Uz$
+
+\end{itemize}
+
+
+
+%----------------------------------------
+%Dictionary Learning
+%----------------------------------------  
+\section{Dictionary Learning}
+$X = U \cdot Z$ alternate betw.
+Coding and Dict. update step
+\begin{itemize}
+\item Update $Z$ to be as sparse as possible (with MP)
+\end{itemize}
+
+Dictionary Update Step
+\begin{itemize}
+\item  $U_{new} =  arg min~ U  ||X-UZ||^2_F$
+\item Update one dictionary item $U_l$ at a time
+	\begin{itemize}
+	
+
+  \item write $U \cdot Z$ as sum omit index l: 
+  $\sum_{i \neq l}{U_i \cdot Z^T_i}$
+  \item Residual $R_l =  X - \left(\sum_{i \neq l}{U_i \cdot Z^T_i}\right)$
+  \item $=> R_l = U_l \cdot Z^T_l$ (where $R_l$, $Z^T_l$ fix)
+  \item $R_l = UDV^T$ update $U_l$ with first column of $U$
+	\end{itemize}  
+   (hint: write SVD as SUM and you will see)
+
+\end{itemize}
+
+
+%----------------------------------------
+%Robust PCA R-PCA
+%----------------------------------------
+\section{Robust PCA R-PCA}
+$X = L + S$  ($L$ is low rank, $S$ is sparse)
+
+relax the problem to:
+
+minimize 	$||L||_* + \lambda \cdot ||S||_1$
+subject to 	$L+S = X$
+
+\subsection{Convex optimisation}
+
+minimize $f(x)$ subject to 
+
+$g_i(x) \leq 0, i = 1,...,m$ inequality constr.
+
+$h_i(x) = 0, i = 1,...,p$ equality constr.
+
+Create the Lagrangian
+
+$L(x, \lambda, \nu) = f(x) + \sum_{i=1}^m{\lambda_i g_i(x) + \sum_{i=1}^p{\nu_i h_i(x)}}$
+
+Lagrange dual function: $ d(\lambda, \nu) = \inf_{x} L (x,\lambda, \nu) $
+
+Lagrange dual problem: max. $d(\lambda, \nu)$  subj. to $\lambda \geq 0$
+
+\subsection{ADMM - Alternating Direction Method of Multipliers}
+
+
+\subsubsection{Alternate Direction}
+
+
+Lagrangian: $L(x,\nu)$
+
+Dual Function: $d(\nu)=\inf_x L(x,\nu)$
+
+Dual Problem: maximize $d(\nu)$
+
+Recover optimal x: $x^* \in argmin_x L(x, \nu^*)$
+
+Gradient Method: $\nu^{k+1} = \nu^k + \alpha^k \nabla d(\nu^k)$
+
+$\nabla  d (\nu^k) = f(\tilde{x})$ , ~~ where
+$\tilde{x} = argmin_x L(x, \nu^k)$
+
+\subsubsection{Dual decomposition}
+
+\begin{enumerate}
+
+\item if $f(x)$ is separable into $f_1(x_1) + f_2(x_2) + ... + f_n(x_n)$
+	  then $L(x,v)$ is separable
+	  so we can split the x-minimisation step
+\item Method of multipliers
+\item create augmented lagrange by adding a penalty function $\frac{\rho}{2}|| .||^2_2$
+\item add more penalty for violating constraints, leads to convergence under far more general condition
+	
+\end{enumerate}
+
+
+\subsubsection{ADMM in short}
+
+minimize $f(x) + p(z)$ s.t. $Ax+Bz=c$
+Augm. Lagrange: $L_p(x,z, \nu)= f(x) +p(z)+\nu^T (Ax+Bz-c) + \frac{\rho}{2}  ||Ax+Bz-c||_2^2$
+
+ADMM:
+
+$x^{k+1} := argmin_x L_{\rho} (x, z^k, \nu^k)$
+
+$z^{k+1} := argmin_z L_{\rho} (x^{k+1}, z, \nu^k)$
+
+$\nu^{k+1} := \nu^k + \rho  (Ax^{k+1} + Bz^{k+1} -c)$
+
+\subsubsection{PCP Recovery Condition}
+
+Probability. $ 1 - \mathcal{O}(n^{-10})$ with $\lambda = \frac{1}{sqrt(n)}$
+
+\end{document}
