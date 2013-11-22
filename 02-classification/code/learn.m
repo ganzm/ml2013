@@ -20,19 +20,18 @@ Y_train = training_data(:, 28); % expected solution
 
 
 %% modify features
-%0.1299239806496199 
 X_train(:,1:3:27) = 1./(X_train(:,1:3:27)+2);
 validation_data(:,1:3:27) = 1./(validation_data(:,1:3:27)+2);
 testing_data(:,1:3:27) = 1./(testing_data(:,1:3:27)+2);
 
 
 %% plot two features
-normal = X_train(Y_train == 1,:);
-dis = X_train(Y_train == -1,:);
-
-plot(normal(:,1), normal(:,4), 'g+');
-hold on
-plot(dis(:,1), dis(:,4), 'r+');
+% normal = X_train(Y_train == 1,:);
+% dis = X_train(Y_train == -1,:);
+% 
+% plot(normal(:,1), normal(:,4), 'g+');
+% hold on
+% plot(dis(:,1), dis(:,4), 'r+');
 
 
 %% parameters found with cross validation
