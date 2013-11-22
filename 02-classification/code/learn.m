@@ -20,9 +20,16 @@ Y_train = training_data(:, 28); % expected solution
 
 
 %% modify features
-X_train = 1./(X_train+2);
-validation_data = 1./(validation_data+2);
-testing_data = 1./(testing_data+2);
+%0.1299239806496199 
+X_train(:,1:3:27) = 1./(X_train(:,1:3:27)+2);
+validation_data(:,1:3:27) = 1./(validation_data(:,1:3:27)+2);
+testing_data(:,1:3:27) = 1./(testing_data(:,1:3:27)+2);
+
+
+%0.13199723565998617 
+%X_train(:,1:3:27) = 1./(X_train(:,1:3:27)+2).^2;
+%validation_data(:,1:3:27) = 1./(validation_data(:,1:3:27)+2).^2;
+%testing_data(:,1:3:27) = 1./(testing_data(:,1:3:27)+2).^2;
 
 %% plot two features
 normal = X_train(Y_train == 1,:);
