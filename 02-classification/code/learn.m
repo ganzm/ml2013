@@ -5,6 +5,9 @@
 %  ... total of neighborhoods = 9 (each of those has the above 3 values)
 % 28 = 1 = normal, -1 = disease (Output)
 
+
+
+
 %% load data
 training_data = csvread('data/origin/training.csv');
 validation_data = csvread('data/origin/validation.csv');
@@ -14,6 +17,21 @@ nSamples = size(training_data,1);
 %% training data
 X_train = training_data(:, 1:27);
 Y_train = training_data(:, 28); % expected solution
+
+
+%% modify features
+X_train = 1./(X_train+2);
+validation_data = 1./(validation_data+2);
+testing_data = 1./(testing_data+2);
+
+%% plot two features
+normal = X_train(Y_train == 1,:);
+dis = X_train(Y_train == -1,:);
+
+plot(normal(:,1), normal(:,4), 'g+');
+hold on
+plot(dis(:,1), dis(:,4), 'r+');
+
 
 %% parameters found with cross validation
 c_best = 1.1;

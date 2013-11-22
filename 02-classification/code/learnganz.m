@@ -3,7 +3,7 @@
 %%
 baseline_hard = 0.15825846579129232;
 baseline_easy = 0.4277816171389081;
-our_result = 0.1747;
+our_result = 0.147099;
 
 result = (our_result - baseline_hard) / (baseline_easy-baseline_hard);
 asdf = (1-result)*0.5  + 0.5;
