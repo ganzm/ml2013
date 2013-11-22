@@ -18,34 +18,47 @@
 \renewcommand{\familydefault}{\sfdefault}
 
 \title{Machine Learning 2013: Project 2 - Classification Report}
-\author{member1@student.ethz.ch\\ member2@student.ethz.ch\\ member3@student.ethz.ch\\}
+\author{fregli@student.ethz.ch\\ ganzm@student.ethz.ch\\ sandrofe@student.ethz.ch\\}
 \date{\today}
 
 \begin{document}
 \maketitle
 
 \section*{Experimental Protocol}
-Suppose that someone wants to reproduce your results. Briefly describe the steps used to obtain the
-predictions starting from the raw data set downloaded from the project website. Use the following
-sections to explain your methodology. Feel free to add graphs or screenshots if you think it's
-necessary. The report should contain a maximum of 2 pages.
+\label{sec:exp-protocl}
+This project was performed using Matlab only. To reproduce test results presented in this report the following steps have to be taken:
+
+\begin{itemize}
+\item Unzip the sourcefolder containing Matlab code and data sets
+\item Run the function learn() located in learn.m to obtain both files \textit{testing\_predicted.csv} and \textit{validation\_predicted.csv}
+\end{itemize}
 
 \section{Tools}
-Which tools and libraries have you used (e.g. Matlab, Python with scikit-learn, Java with Weka,
-SPSS, language x with library y, $\ldots$). If you have source-code (Matlab scripts, Python scripts, Java source folder, \dots),
-make sure to submit it on the project website together with this report. If you only used
-command-line or GUI-tools describe what you did.
+
+As stated in Section \nameref{sec:exp-protocl} the only tool which is needed is Matlab - no fancy special commands, no additional libraries are required.
 
 \section{Algorithm}
-Describe the algorithm you used for classification.
 
-\section{Features}
-Did you perform any preprocessing on the features? What feature transforms did you use?
+The algorithm performs the following steps an can be started by running learn().
+
+\paragraph{Read csv files}
+All 3 files read in a first step.
+
+\paragraph{Split training set}
+Training data are split into feature vectors and the expected result vector.
+
+\paragraph{Preprocess features}
+In a next step some features are transformed due to some insights gained through extensive plotting.
+
+\paragraph{Compute result}
+To train our model and to compute the results we simply used the Matlab build in function \textit{svmtrain} and \textit{svmclassify}. This led to quite good results.
 
 \section{Parameters}
-How did you find the parameters of your model? (What parameters have you searched over, cross validation procedure, $\ldots$)
+Since we used a rbf kernel, we had to identify the two hyperparameters $c$ (cost) and $\gamma$ (scaling factor in the rbf kernel). We initially used simple try and error as a starting point and achieved quite impressive results already. Afterwards we applied some simpler version of cross validation to fine tune the parameters. Note that each parameter was identified on its own and not through grid search as it is usually recommended. Therefore it is likely that there are still better combinations of $c$ and $\gamma$. 
 
-\section{Lessons Learned} What other algorithms did you try out that didn't work well?
-Why do you think they performed worse than what you used for your final submission?
+
+\section{Lessons Learned} 
+We tried numerous algorithms but none of them led us to success. We played around with libsvm, but even with the exact same parameters as for Matlab svm we didn't get similar results. Libsvm performed worse in each and every configuration compared to Matlab svm. This might be the cause of some implementational differences of those libraries or due to lack of knowledge from our side. \\
+Overall we learned how to address classification problems with svm. It turned out that Matlab has an impressive implementation of svm, which performs very well out of the box.
 
 \end{document} 
