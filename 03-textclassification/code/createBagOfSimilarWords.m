@@ -13,7 +13,7 @@ for i=1:length(bagOfWords)
     word = bagOfWords{i};
     wordInserted = false;
     
-    disp(['Processing ' num2str(i) '/' num2str(length(bagOfWords)) ' ' word ]);
+    disp(['Bag of Similar Words ' num2str(i) '/' num2str(length(bagOfWords)) ' ' word ]);
     
     % loop through list of similar word-lists
     for j=length(b):-1:1
