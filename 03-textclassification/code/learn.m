@@ -1,10 +1,15 @@
 
+
+%% add editing stance algos
+addpath('edit_distances');
+
 %% easy baseline
 baseline_easy = 3973.75;
 
 %% erase local variables
 clear all;
 
+%% read data
 parseFiles = true;
 
 if  exist('trainingData.mat', 'file') && ... 
@@ -14,7 +19,6 @@ if  exist('trainingData.mat', 'file') && ...
    
     parseFiles = false;
 end
-
 
 %% read raw csv data
 if parseFiles
@@ -35,45 +39,52 @@ else
     load('validationData.mat'); 
 end
 
+%% calculate bag of words
+bagOfWords = cell(0,0);
+bagOfWords = addToBagOfWords(bagOfWords, trainingData);
+bagOfWords = addToBagOfWords(bagOfWords, testingData);
+bagOfWords = addToBagOfWords(bagOfWords, validationData);
+
+% remove duplicates
+bagOfWords = unique(bagOfWords);
+
+%% create bag of similar words
+if  exist('bagOfSimilarWords.mat', 'file') 
+    load('bagOfSimilarWords.mat');
+else 
+    bagOfSimilarWords = createBagOfSimilarWords(bagOfWords);
+    save('bagOfSimilarWords.mat', 'bagOfSimilarWords');
+end
+
+%% generate feature vector
+
+if  exist('x.mat', 'file') 
+    load('x.mat');
+else 
+    X = createBooleanFeatures(trainingData, bagOfSimilarWords);
+    save('x.mat', 'X');
+end
 
 
+if  exist('x_val.mat', 'file') 
+    load('x_val.mat');
+else 
+    X_val = createBooleanFeatures(validationData, bagOfSimilarWords);
+    save('x_val.mat', 'X_val');
+end
 
-% %% reshape them
-% X = trainingData(:,1:27);
-% labels = trainingData(:,28);
-% 
-% Xt = testingData;
-% Xv = validationData;
-% 
-% %% plot two features
-% normal = X(labels== 1,:);
-% dis = X(labels == -1,:);
-% 
-% for j=1:27    
-%     [xN, ~] = size(normal);
-%     [xD, ~] = size(dis);
-%     numFeatures = max(xN, xD);
-%     tmp = zeros(numFeatures,2);
-%     tmp(1:xN,1) = normal(:,j);
-%     tmp(1:xD,2) = dis(:,j);
-%     
-%     figure;
-%     scale = linspace(min(min(tmp)), max(max(tmp)), 40);
-%     hist(tmp, scale);
-%     title(['Histogram Feature ' num2str(j) ]);
-% end
-% 
-% %% learn
-% 
-% SVMStruct = svmtrain(X, labels, 'autoscale', true, 'kernel_function', 'rbf', 'rbf_sigma', 0.5);
-% 
-% Y = svmclassify(SVMStruct,X);
-% Yt = svmclassify(SVMStruct,Xt);
-% Yv = svmclassify(SVMStruct,Xv);
-% 
-% %% estimate error
-% 
-% 
-% %% write output
-% writeOutput('validation.csv', Yv);
-% writeOutput('testing.csv', Yt);
+
+if  exist('x_test.mat', 'file') 
+    load('x_test.mat');
+else 
+    X_test = createBooleanFeatures(testingData, bagOfSimilarWords);
+    save('x_test.mat', 'X_test');
+end
+
+%% KNN learn
+
+mdlCityCode = ClassificationKNN.fit(X, trainResult(:,1));
+mdlCountryCode = ClassificationKNN.fit(X, trainResult(:,2));
+
+a = predict(mdlCityCode, X);
+b = predict(mdlCountryCode, X);
