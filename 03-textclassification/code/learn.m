@@ -61,22 +61,30 @@ end
 if  exist('x.mat', 'file') 
     load('x.mat');
 else 
-    x = createBooleanFeatures(trainingData, bagOfSimilarWords);
-    save('x.mat', 'x');
+    X = createBooleanFeatures(trainingData, bagOfSimilarWords);
+    save('x.mat', 'X');
 end
 
 
 if  exist('x_val.mat', 'file') 
     load('x_val.mat');
 else 
-    x_val = createBooleanFeatures(validationData, bagOfSimilarWords);
-    save('x_val.mat', 'x_val');
+    X_val = createBooleanFeatures(validationData, bagOfSimilarWords);
+    save('x_val.mat', 'X_val');
 end
 
 
 if  exist('x_test.mat', 'file') 
     load('x_test.mat');
 else 
-    x_test = createBooleanFeatures(testingData, bagOfSimilarWords);
-    save('x_test.mat', 'x_test');
+    X_test = createBooleanFeatures(testingData, bagOfSimilarWords);
+    save('x_test.mat', 'X_test');
 end
+
+%% KNN learn
+
+mdlCityCode = ClassificationKNN.fit(X, trainResult(:,1));
+mdlCountryCode = ClassificationKNN.fit(X, trainResult(:,2));
+
+a = predict(mdlCityCode, X);
+b = predict(mdlCountryCode, X);
