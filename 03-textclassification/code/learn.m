@@ -45,8 +45,33 @@ bagOfWords = addToBagOfWords(bagOfWords, trainingData);
 bagOfWords = addToBagOfWords(bagOfWords, testingData);
 bagOfWords = addToBagOfWords(bagOfWords, validationData);
 
-% remove duplicates
-bagOfWords = unique(bagOfWords);
+
+%% before making unique look at statistics
+% all words
+words = bagOfWords;
+% how many words do we have
+running_words = length(words);
+% our vocabulary
+vocabulary = unique(words);
+% how many vocalbulary words do we have
+vocabulary_words = length(vocabulary);
+% which word has which frequency ( index contains pointers to the corresponding word in vocabulary for each running word in words. 
+[vocabulary,void,index] = unique(words);
+frequencies = hist(index,vocabulary_words);
+
+%
+[ranked_frequencies,ranking_index] = sort(frequencies,'descend');
+ranked_vocabulary = vocabulary(ranking_index);
+
+% here we could remove singletons and high frequency words
+%hf_terms = (ranked_frequencies/max(ranked_frequencies))>0.02;
+%lf_terms = ranked_frequencies<=5;
+%pruned_ranked_vocabulary = ranked_vocabulary(not(hf_terms|lf_terms));
+
+bagOfWords = ranked_vocabulary;
+
+%% remove duplicates
+% bagOfWords = unique(bagOfWords) % the old way
 
 %% create bag of similar words
 if  exist('bagOfSimilarWords.mat', 'file') 
@@ -82,9 +107,27 @@ else
 end
 
 %% KNN learn
+mdlCountryCode = ClassificationKNN.fit(X, trainResult(:,2),'NSMethod','exhaustive',...
+    'Distance','cosine');
 
-mdlCityCode = ClassificationKNN.fit(X, trainResult(:,1));
-mdlCountryCode = ClassificationKNN.fit(X, trainResult(:,2));
+mdlCityCode = ClassificationKNN.fit(X, trainResult(:,1),'NSMethod','exhaustive',...
+    'Distance','cosine');
 
-a = predict(mdlCityCode, X);
-b = predict(mdlCountryCode, X);
+%% check country
+mdlCountryCode.NumNeighbors = 5;
+kfoldLoss(crossval(mdlCountryCode,'kfold',10))
+
+%% check city
+mdlCityCode.NumNeighbors = 13;
+kfoldLoss(crossval(mdlCityCode,'kfold',10))
+
+
+
+%% predict
+cityCodeVal = predict(mdlCityCode, X_val);
+countryCodeVal = predict(mdlCountryCode, X_val);
+
+
+%% save
+writeOutput('./result/validation_predicted.txt',cityCodeVal,countryCodeVal)
+

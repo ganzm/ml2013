@@ -2,7 +2,7 @@ function [ bagOfSimilarWords ] = createBagOfSimilarWords( bagOfWords )
 %CREATEBAGOFSIMILARWORDS Summary of this function goes here
 %   Detailed explanation goes here
 
-thresh = 3;
+
 
 b = cell(0,0);
 
@@ -12,6 +12,7 @@ for i=1:length(bagOfWords)
     % word to add
     word = bagOfWords{i};
     wordInserted = false;
+    thresh = calcTresh(word);
     
     disp(['Bag of Similar Words ' num2str(i) '/' num2str(length(bagOfWords)) ' ' word ]);
     
@@ -42,6 +43,21 @@ for i=1:length(bagOfWords)
 end
 
 bagOfSimilarWords = b;
+
+end
+
+function tresh = calcTresh(word)
+wordlength = length(word);
+
+if(wordlength >= 7)
+    tresh = 3;
+elseif(wordlength >= 5)
+    tresh = 2;
+elseif(wordlength >= 3)
+    tresh = 1;
+elseif(wordlength >= 1)
+    tresh = 0;
+end
 
 end
 
