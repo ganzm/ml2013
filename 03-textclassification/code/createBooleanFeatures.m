@@ -16,20 +16,22 @@ for i = 1:numSamples
     splited = strsplit(xRaw{i});
     
     for j=1:length(splited)
-        s = splited{j}; 
+        s = splited{j};
         
         % find s in our bagOfSimilarWords
         found = false;
         for m=1:length(bagOfSimilarWords)
             similarWordSet = bagOfSimilarWords{m};
-            for n=1:length(similarWordSet)
-                if strcmp(similarWordSet{n}, s)
-                    
-                    x(i, m) = 1;
-                    found = true;
-                    break;
-                end
+            %  for n=1:length(similarWordSet)
+            % if strcmp(similarWordSet{n}, s)
+            if strcmp(similarWordSet, s)
+                
+                %x(i, m) = 1; %
+                x(i, m) = x(i, m) + 1;
+                found = true;
+                break;
             end
+            %end
             
             if found
                 break;

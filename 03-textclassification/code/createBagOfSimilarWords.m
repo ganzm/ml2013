@@ -49,15 +49,24 @@ end
 function tresh = calcTresh(word)
 wordlength = length(word);
 
-if(wordlength >= 7)
-    tresh = 3;
-elseif(wordlength >= 5)
+% if(wordlength >= 7)
+%     tresh = 3;
+% elseif(wordlength >= 5)
+%     tresh = 2;
+% elseif(wordlength >= 3)
+%     tresh = 1;
+% elseif(wordlength >= 1)
+%     tresh = 0;
+% end
+
+if(wordlength >= 15)
     tresh = 2;
-elseif(wordlength >= 3)
+elseif(wordlength >= 10)
     tresh = 1;
 elseif(wordlength >= 1)
     tresh = 0;
 end
+
 
 end
 
