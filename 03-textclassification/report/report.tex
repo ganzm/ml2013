@@ -18,34 +18,93 @@
 \renewcommand{\familydefault}{\sfdefault}
 
 \title{Machine Learning 2013: Project 3 - Text Classification Report}
-\author{member1@student.ethz.ch\\ member2@student.ethz.ch\\ member3@student.ethz.ch\\}
+\author{fregli@student.ethz.ch\\ ganzm@student.ethz.ch\\ sandrofe@student.ethz.ch\\}
 \date{\today}
 
 \begin{document}
 \maketitle
 
 \section*{Experimental Protocol}
-Suppose that someone wants to reproduce your results. Briefly describe the steps used to obtain the
-predictions starting from the raw data set downloaded from the project website. Use the following
-sections to explain your methodology. Feel free to add graphs or screenshots if you think it's
-necessary. The report should contain a maximum of 2 pages.
+% Suppose that someone wants to reproduce your results. Briefly describe the steps used to obtain the predictions starting from the raw data set downloaded from the project website. Use the following sections to explain your methodology. Feel free to add graphs or screenshots if you think it's necessary. The report should contain a maximum of 2 pages.
+
+The project consists of two distinct steps. Preprocessing and transforming the input data and as a second part learning and predicting the results.
+
+\paragraph{Extract the raw data set} and place the csv files \textit{training.csv}, \textit{testing.csv}, \textit{vaildation.csv} into a subfolder of the matlab source directory called \textit{data}. Relative to the source folder one should finde the following path \textit{./data/testing.cvs}.
+
+\paragraph{Perform Matlab preprocessing} by running the files first.m and learn.m should in sequential order. This generates the files \textit{X-val.csv}, \textit{X-test.csv}, \textit{X.csv} which will be used in the next step.
+
+\paragraph{Perform the learning and prediction} step.\\
+
+TODO
+
+
 
 \section{Tools}
-Which tools and libraries have you used (e.g. Matlab, Python with scikit-learn, Java with Weka,
-SPSS, language x with library y, $\ldots$). If you have source-code (Matlab scripts, Python scripts, Java source folder, \dots),
-make sure to submit it on the project website together with this report. If you only used
-command-line or GUI-tools describe what you did.
+% Which tools and libraries have you used (e.g. Matlab, Python with scikit-learn, Java with Weka, SPSS, language x with library y, $\ldots$). If you have source-code (Matlab scripts, Python scripts, Java source folder, \dots), make sure to submit it on the project website together with this report. If you only used command-line or GUI-tools describe what you did.
+
+As tools we used Matlab for the preprocessing. Some of the team members had to install the string toolbox to have it running.\\
+
+The machine learning part of the project was performed with Python and scikit-learn.
+
 
 \section{Algorithm}
-Describe the algorithm you used for classification.
+%Describe the algorithm you used for classification.
+
+
+\subsection{Preprocesing}
+\label{subsec:preproc}
+
+
+\paragraph{Create Bag of words with frequencies}
+
+In a first step all words occurring in all city names are put into a bag of words and ordered according to their frequency in which they appear.
+
+\paragraph{Fix Typos}
+In this step we try to fix typos. Starting from the word which occurs the least we try to assign it to another word which is observed more often. Two words are assigned to each other when they are close to each other. As a proximity measure the Levenshtein distance with a linear threshold is used. A linear threshold means that longer words are allowed to have more typos than shorter and can still be considered to be close to each other.\\
+
+Having assigned low frequency words to others the bag of words with frequencies is calculated again. The new bag of words can now be seen as having eliminated typos.
+
+\paragraph{Create Stem list}
+By the time we arrive at this step the number of features has already drastically decreased (about 1000 distinct words are left). We now try to find words which have the same stem (like \textit{working},\textit{worker}). Each word is now compared with each other by counting the number of subsequent characters which are equal (starting from the left of the word). Exceeds the number of equal characters divided by the length of the word a certain threshold both words are assumed to have the same stem (\textit{working} and \textit{worker} become \textit{work}). Having words replaced and merged with their stem words the bag of word is generated again.
+
+\paragraph{Boolean matrix} Having the final version of the bag of words we now create a boolean matrix from the training, test and validation set which may look like this.
+
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline 
+yrjhnjcnfy & erwtonm & uhl & blub & ... & city code & country code \\ 
+\hline 
+1 & 1 & 0 & 0 &  & 129771 & 196 \\ 
+\hline 
+0 & 0 & 0 & 1 &  & 819100 & 458 \\ 
+\hline 
+0 & 1 & 0 & 1 &  & 547653 & 677 \\ 
+\hline 
+... &  &  &  &  &  &  \\ 
+\hline 
+\end{tabular} 
+
+\subsection{Learn and Predict} 
+The resulting data of the preprocessing step is trained and estimated using the python one versus all linear SVM algorithm.
+
 
 \section{Features}
-Did you perform any preprocessing on the features? What feature transforms did you use?
+% Did you perform any preprocessing on the features? What feature transforms did you use?
+
+Feature preprocessing is described in \ref{subsec:preproc}
 
 \section{Parameters}
-How did you find the parameters of your model? (What parameters have you searched over, cross validation procedure, $\ldots$)
+% How did you find the parameters of your model? (What parameters have you searched over, cross validation procedure, $\ldots$)
 
-\section{Lessons Learned} What other algorithms did you try out that didn't work well?
-Why do you think they performed worse than what you used for your final submission?
+The several parameters used in the preprocessing step were determined by looking at the result and by try and error.\\
+
+Parameters required in the learning phase were obtained using crossvalidation.
+
+
+\section{Lessons Learned} 
+%What other algorithms did you try out that didn't work well?
+%Why do you think they performed worse than what you used for your final submission?
+
+Do not use Matlab for string processing. It will work out but it is not convenient at all.
+
 
 \end{document} 
