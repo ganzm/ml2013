@@ -8,7 +8,7 @@
 \setlength{\marginparwidth}{1.5cm}
 \setlength{\parindent}{0cm}
 \setlength{\parskip}{0.15cm}
-\setlength{\textheight}{22cm}
+\setlength{\textheight}{23cm}
 \setlength{\oddsidemargin}{0cm}
 \setlength{\evensidemargin}{\oddsidemargin}
 \setlength{\topmargin}{0cm}
@@ -31,20 +31,14 @@ The project consists of two distinct steps. Preprocessing and transforming the i
 
 \paragraph{Extract the raw data set} and place the csv files \textit{training.csv}, \textit{testing.csv}, \textit{vaildation.csv} into a subfolder of the matlab source directory called \textit{data}. Relative to the source folder one should finde the following path \textit{./data/testing.cvs}.
 
-\paragraph{Perform Matlab preprocessing} by running the files first.m and learn.m should in sequential order. This generates the files \textit{X-val.csv}, \textit{X-test.csv}, \textit{X.csv} which will be used in the next step.
+\paragraph{Perform Matlab preprocessing} by running the files \textit{first.m} and \textit{learn.m} in sequential order. This generates the files \textit{X-val.csv}, \textit{X-test.csv}, \textit{X.csv} which will be used in the next step.
 
-\paragraph{Perform the learning and prediction} step.\\
-
-TODO
-
-
+\paragraph{Perform the learning and prediction} step by executing the python script \textit{run.py} .\\
 
 \section{Tools}
 % Which tools and libraries have you used (e.g. Matlab, Python with scikit-learn, Java with Weka, SPSS, language x with library y, $\ldots$). If you have source-code (Matlab scripts, Python scripts, Java source folder, \dots), make sure to submit it on the project website together with this report. If you only used command-line or GUI-tools describe what you did.
 
-As tools we used Matlab for the preprocessing. Some of the team members had to install the string toolbox to have it running.\\
-
-The machine learning part of the project was performed with Python and scikit-learn.
+As tools we used Matlab for the preprocessing. Some of the team members had to install the string toolbox to have it running. The machine learning part of the project was performed with Python and scikit-learn.
 
 
 \section{Algorithm}
@@ -67,7 +61,7 @@ Having assigned low frequency words to others the bag of words with frequencies 
 \paragraph{Create Stem list}
 By the time we arrive at this step the number of features has already drastically decreased (about 1000 distinct words are left). We now try to find words which have the same stem (like \textit{working},\textit{worker}). Each word is now compared with each other by counting the number of subsequent characters which are equal (starting from the left of the word). Exceeds the number of equal characters divided by the length of the word a certain threshold both words are assumed to have the same stem (\textit{working} and \textit{worker} become \textit{work}). Having words replaced and merged with their stem words the bag of word is generated again.
 
-\paragraph{Boolean matrix} Having the final version of the bag of words we now create a boolean matrix from the training, test and validation set which may look like this.
+\paragraph{Boolean matrix} Having the final version of the bag of words we now create a boolean matrix from the training, test and validation set. It may look like this.
 
 \begin{tabular}{|c|c|c|c|c|c|c|}
 \hline 
@@ -77,11 +71,11 @@ yrjhnjcnfy & erwtonm & uhl & blub & ... & city code & country code \\
 \hline 
 0 & 0 & 0 & 1 &  & 819100 & 458 \\ 
 \hline 
-0 & 1 & 0 & 1 &  & 547653 & 677 \\ 
-\hline 
 ... &  &  &  &  &  &  \\ 
 \hline 
 \end{tabular} 
+
+We then reduce the number of features further to about 200 by removing the word with a low total of occurrences.
 
 \subsection{Learn and Predict} 
 The resulting data of the preprocessing step is trained and estimated using the python one versus all linear SVM algorithm.
