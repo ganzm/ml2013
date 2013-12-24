@@ -26,13 +26,52 @@ headsep=0mm, footskip=0mm}
 
 Generalisation/Prediction Error: Expected \#mistakes on unkown data
 
+
+\section{Probability}
+
+\subsection{Gaussian Distribution}
+
+$p_{1D}(x) = {1 \over {\sqrt{2 \pi \sigma^2}}} exp{\left( -{{\left(x - \mu\right)^2} \over{2 \sigma^2}} \right)}$
+
+
+$p_{dD}(x) = {1 \over {\sqrt{{(2 \pi)}^d |\Sigma|}}} exp{\left( -{ {1 \over 2}  {\left(x - \mu\right)^T} \Sigma^{-1} {\left(x - \mu\right)}}\right)}$
+
+
+
 \section{Ridge Regression}
 
 Problem: $ w^* =  arg \min \limits_w \sum \limits_{i=1}^n \left(y_i - w^Tx_i\right)^2 + \lambda ||w||_2^2$
 
-\section{Crossvalidation}
+Closed Form: $w^* = \left(X^T X + \lambda I \right)^{-1} X^T y$
+
+
+\section{Linear Classification}
+
+Problem: $ w^* =  arg \min \limits_w \sum \limits_{i=1}^n l\left(w;x_i,y_i\right)$
+
+
+\subsection{Some Loss-Functions}
+\textbf{Square Loss} $l_2 = (y_i - w^T x_i)^2$
+
+\textbf{0/1 Loss:} $ l_{0/1}  =  y_i \neq sign(w^Tx_i)$
+
+\textbf{Perceptron Loss:} $l_p\left(w;y_i,x_i \right) =   max(0, -y_i w^T x_i)$
+
+\textbf{Hinge Loss (SVM):} $l_h =   max(0, 1 -y_i w^T x_i)$
+
+\subsubsection{Stochastic gradient Descent}
+
+$w_{t+1} = w_{t} - \eta \nabla l(w_t;x', y') $  learning rate $\eta$
+
+
 
 \section{SVMs}
+Hard margin SVM problem: $\min \limits_W w^Tw , s.t.~ y_i W^T x_i >= 1$
+
+
+ vs. soft margin SVM (has slack variables)
+
+
 
 \section{Bayesian Learning}
 
