@@ -60,22 +60,75 @@ Problem: $ w^* =  arg \min \limits_w \sum \limits_{i=1}^n l\left(w;x_i,y_i\right
 \textbf{Hinge Loss (SVM):} $l_h =   max(0, 1 -y_i w^T x_i)$
 
 \subsubsection{Stochastic gradient Descent}
+pick random $x'$ and $y'$
+if $ l(w_t;x',y') \neq 0$
 
 $w_{t+1} = w_{t} - \eta \nabla l(w_t;x', y') $  learning rate $\eta$
 
 
 
 \section{SVMs}
-Hard margin SVM problem: $\min \limits_W w^Tw , s.t.~ y_i W^T x_i >= 1$
+Hard margin SVM problem: $\min \limits_w w^Tw , s.t.~ y_i W^T x_i >= 1$
 
 
- vs. soft margin SVM (has slack variables)
+
+Confidence $\eta = y w^T x$
+
+Margin to w-plane $\gamma = \min \limits_{x' \in L} ||x-x'|| $
+
+We are looking for a plane such that every sample has minimum distance 1(not actually 1).
 
 
+\subsection{Soft margin SVM}
+
+Unconstrained: $\min \limits_w w^Tw + C \sum \limits_i max\left(0, 1-y_iw^Tx_i\right)$
+
+
+% TODO corrections slide 5 page 4
+Constrained: $\min \limits_{w,w_o, e} {{1 \over 2} ||w||^2 + C \sum \limits_{i=1}^n {e_i}}$ 
+
+s.t. $ y_i \left( <w, x_i> + w_o \right) \geq 1 - e_i \forall i = 1,...,n$
+
+
+Dual Form: $ \max \limits_{\alpha} \sum \limits_{i=1}^m \alpha_i - {1 \over 2} \sum \limits_{i,j} \alpha_i \alpha_j y_i y_j x_i^T x_j$ s.t. $\sum \limits_i \alpha_i y_i  = 0$ and $0 \leq \alpha_i \leq C$
+
+
+\section{Kernels $k(x,y)$}
+
+%TODO komisch
+$k: \cal{X} \times \cal{X} \rightarrow \mathbb{R}$ iff 
+$\forall{x,y} \in \cal{X}  k \left(x,y\right) = k \left(y,x\right)$
+
+Gram Matrix K: $(K)_{i,j} = k(i,j)$ is p.s.d
+
+
+\paragraph{Gaussian Kernel}: $exp\left( - {{||x-y||^2}\over{2 \sigma^2}} \right)$ 
+
+
+\paragraph{Sigmoid Kernel}: $tanh(\kappa x^T y + b)$
+
+\paragraph{Polynomial Kernel}: $\left( x^Ty + c \right)^d, c \geq 0$
+
+\paragraph{Closure Properties}
+
+\begin{enumerate}
+\item $k(x,y) = a k_1(x,y) + b k_2(x,y)$, $a,b \geq 0$
+\item $k(x,y) =  k_1(x,y)  k_2(x,y)$, $k_1, k_2$ are kernels
+\item $k(x,y) =  k_3(\phi(x),  \phi(y))$, $k_3$ is a kernel
+\end{enumerate}
 
 \section{Bayesian Learning}
 
 
+\section{LinAlg}
+
+\paragraph{Positiv Semidefiniteness (p.s.d)}
+
+$K \in \mathbb{R}$ is psd 
+
+$\iff x^TKx \geq 0 \forall x in \mathbb{R}$
+
+$\iff all eigenvalues of K are \geq 0$
 
 \maketitle
 
