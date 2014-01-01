@@ -44,6 +44,9 @@ Problem: $ w^* =  arg \min \limits_w \sum \limits_{i=1}^n \left(y_i - w^Tx_i\rig
 
 Closed Form: $w^* = \left(X^T X + \lambda I \right)^{-1} X^T y$
 
+\section{Kernelized Linear Regression}
+
+$\min \limits_{\alpha_1,...,\alpha_n} \sum \limits_{i=1}^n\left( \sum \limits_{j=1}^n \alpha_j k(x_i,x_j) - y_i \right)^2 + \lambda \alpha^T K \alpha$
 
 \section{Linear Classification}
 
@@ -93,14 +96,24 @@ s.t. $ y_i \left( <w, x_i> + w_o \right) \geq 1 - e_i \forall i = 1,...,n$
 Dual Form: $ \max \limits_{\alpha} \sum \limits_{i=1}^m \alpha_i - {1 \over 2} \sum \limits_{i,j} \alpha_i \alpha_j y_i y_j x_i^T x_j$ s.t. $\sum \limits_i \alpha_i y_i  = 0$ and $0 \leq \alpha_i \leq C$
 
 
+Optimal solution is a linear combination of the data $w^* = \sum \limits_{i=1}^n \left( \alpha_i y_i \right) x_i$
+
+Classification: $y_{new} = sign(  \sum \limits_{i=1}^n \alpha_i y_i  k(x_i, x_{new})  )$
+
 \section{Kernels $k(x,y)$}
 
-%TODO komisch
-$k: \cal{X} \times \cal{X} \rightarrow \mathbb{R}$ iff 
-$\forall{x,y} \in \cal{X}  k \left(x,y\right) = k \left(y,x\right)$
+$k: \mathcal{X} \times \mathcal{X} \rightarrow \mathbb{R}  \Leftrightarrow \forall x,y \in \mathcal{X} : k\left( x , y \right) = k \left(y,x\right)$
 
+$\forall x, y$
 Gram Matrix K: $(K)_{i,j} = k(i,j)$ is p.s.d
 
+\subsection{Representer Theorem}
+
+Problem: $\min \limits_{f \in \mathcal{H}} \sum \limits_{i=1}^n l(f(x_i);x_i, y_i) + \lambda || f||_{\mathcal{H}}^2$
+
+sol: $\min \limits_{\alpha_1,...,\alpha_n} \sum \limits_{i=1}^n l \left( \sum \limits_{j=1}^n \alpha_j k(x_i, x_j);x_i,y_i  \right) + \lambda \alpha^T K \alpha$
+
+$f(x) = \sum \limits_{j=1}^n \alpha_j k(x_j, x)$
 
 \paragraph{Gaussian Kernel}: $exp\left( - {{||x-y||^2}\over{2 \sigma^2}} \right)$ 
 
@@ -115,7 +128,11 @@ Gram Matrix K: $(K)_{i,j} = k(i,j)$ is p.s.d
 \item $k(x,y) = a k_1(x,y) + b k_2(x,y)$, $a,b \geq 0$
 \item $k(x,y) =  k_1(x,y)  k_2(x,y)$, $k_1, k_2$ are kernels
 \item $k(x,y) =  k_3(\phi(x),  \phi(y))$, $k_3$ is a kernel
+\item $k(x,y) =  f(x) f(y)$
+\item $k(x,y) =  exp(k_1(x,y))$
 \end{enumerate}
+
+
 
 \section{Bayesian Learning}
 
