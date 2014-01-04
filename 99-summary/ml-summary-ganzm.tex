@@ -5,6 +5,7 @@
 %\usepackage{times}
 %\usepackage{balance}
 \usepackage{url}
+\usepackage{xcolor}
 \usepackage{graphicx}	% For figure environment
 \usepackage[center]{subfigure}
 \usepackage{amssymb}	% For mathematical figures like \mathbb{R}
@@ -27,6 +28,8 @@ headsep=0mm, footskip=0mm}
 Generalisation/Prediction Error: Expected \#mistakes on unkown data
 
 
+$Generalisation Error = Bias^2 + Variance + Noise$	
+
 \section{Probability}
 
 \subsection{Gaussian Distribution}
@@ -37,12 +40,26 @@ $p_{1D}(x) = {1 \over {\sqrt{2 \pi \sigma^2}}} exp{\left( -{{\left(x - \mu\right
 $p_{dD}(x) = {1 \over {\sqrt{{(2 \pi)}^d |\Sigma|}}} exp{\left( -{ {1 \over 2}  {\left(x - \mu\right)^T} \Sigma^{-1} {\left(x - \mu\right)}}\right)}$
 
 
+Multiple of Gaussians are gaussian:
+$X \sim  \mathcal{N}(\mu, \Sigma)~~, Y = MX \Rightarrow Y \sim \mathcal{N}(M\mu, M \Sigma M^T)$
+
+Sums of Gaussians are gaussian:
+$X_1 \sim \mathcal{N}(\mu_1, \Sigma_1)$,
+$X_2 \sim \mathcal{N}(\mu_2, \Sigma_2)$, 
+$Y=X_1 + X_2$
+$\Rightarrow Y \sim \mathcal{N}(\mu_1 + \mu_2; \Sigma_1+\Sigma_2)$
+
 
 \section{Ridge Regression}
 
 Problem: $ w^* =  arg \min \limits_w \sum \limits_{i=1}^n \left(y_i - w^Tx_i\right)^2 + \lambda ||w||_2^2$
 
 Closed Form: $w^* = \left(X^T X + \lambda I \right)^{-1} X^T y$
+
+\section{Sparse Regression: Lasso}
+
+Problem: $ w^* =  arg \min \limits_w \sum \limits_{i=1}^n \left(y_i - w^Tx_i\right)^2 + \lambda ||w||_1$
+
 
 \section{Kernelized Linear Regression}
 
@@ -132,18 +149,112 @@ $f(x) = \sum \limits_{j=1}^n \alpha_j k(x_j, x)$
 \item $k(x,y) =  exp(k_1(x,y))$
 \end{enumerate}
 
+\section{Multiple Classes}
+
+\subsection{1 VS all}
 
 
+\section{Maximum Apposteriory estimation MAP}
+Maximize likelihood of model parameter $w^* = arg \max \limits_w P(w|x_1,...x_n,y_1,...,y_n $ 
+	
 \section{Bayesian Learning}
 
+\subsection{Prior Assumption}
+
+\paragraph{Laplace} Prior $p(x;\mu, b) = {1 \over {2b}} exp \left( - {{|x - \mu|}\over{b}} \right)$ corresponds to L1-Regularizer
+
+\paragraph{Gauss} Prior $p(x;\mu, \sigma)$ corresponds to L2-Regularizer
+
+\subsection{Logistic Regression}
+Classification method which replaces assumption about gaussian noise by iid bernoulli noise.
+
+$P(y|x,w) = Ber(y; \sigma(w^Tx))$
+
+
+Link Func: $P(Y=+1|x,w) =  \sigma(w^Tx) = 	{1 \over {1+exp(-w^Tx)}}$
+
+Learn $w^* = arg \min \limits_w \sum \limits_{i=1}^n log \left( 1 + exp(-y_iw^Tx_i) \right)$
+
+Classifiy $P(y|x_{new}, w^* ) = {1 \over {1+exp(-y{w^*}^Tx)}}$
+
+\subsection{Bayesian Decision Theory}
+
+If distribution $P(y|x)$ is known, best action $a^*$ is determined: $a^* = arg \min \limits_{a \in \mathcal{A}} E_y[C(y,a)|x]$ where $C(y,a)$ is a cost function. TODO Slide 8
+
+
+
+\subsection{Bayesian model Averaging BMA}
+
+
+
+% integrate over all models and weight them with their probability
+$P(y_{new}, x_{new}, D) = \int  P(y_{new}|x_{new}, w) P(w|D) dw$
+
+\section{Gaussian Processes}
+TODO
+
+\section{Ensemble Methods}
+
+\paragraph{Stumps}
+$h(x) = sign(ax_i - t), ~a \in \lbrace-1,+1\rbrace $ 
+
+\paragraph{Decision Trees} hierarchical ordered stumps
+
+\subsection{Bagging}
+Train each weak learner on a random subset of the datapoints. Classify new points by majority vote.
+
+\subsection{Random Forest classifier}
+TODO
+
+\subsection{Boosting}
+
+AdaBoost, with weight $w_i$ per datapoint greedily optimizes for exp loss.
+\begin{itemize}
+\item for $i=1:m$
+\begin{itemize}
+\item $h_i \leftarrow arg \min \limits_h \sum \limits_{j=1}^n  w_j^{(i)}[h(x_j) \neq y_j]$
+\item $err_i = {{\sum \limits_{j=1}^n w_j^{(i)}[y_j \neq h_i(x_j)]}\over{\sum \limits_{j=1}^n w_j^{(i)}}} $
+$,~~\beta_i = log {{1-err_i}\over{err_i}}$
+
+\item $w_j^{(i+1)} = w_j^{(i)} exp(\beta_i [h_i(x_j) \neq y_j])$
+\end{itemize}
+\item output: $f(x) = \sum \limits_{i=1}^n \beta_i h_i (x)$
+\end{itemize}
+
+
+\section{Generative Models}
+
+\subsection{Conjugate priors}
+Pair of Prior assumption $P(y)$ about data and likelihood function is called conjucate if posterior distribution remains in the same family as the prior.
+
+\section{Unsupervised Learning}
+\subsection{K-Means (Lloyd's Algo}
+
+$z_i \leftarrow arg \min \limits_{j \in \lbrace 1,...,k \rbrace } || x_i - \mu_j^{(t-1)} ||_2^2 $
+
+$ \mu_j^{(t)} \leftarrow {1 \over {n_j}} \sum \limits_{i:z_i = j} x_i$
+
+
+\subsection{GMM}
+
+$P(x|\theta) = P(x|\mu, \Sigma, w) = \sum \limits_i w_i \mathcal{N} (x;\mu_i, \Sigma_i)$, $~\sum \limits_i w_i = 1$
+
+Latent Variable: $\gamma_j(x) = P(z=j|x,\Sigma, \mu) = {{w_j P(x|\Sigma_j, \mu_j)}\over{\sum_j w_j P(x|\Sigma_l , \mu_l)}}$ 
+
+
+$\mu_j^* = {{\sum_{i=1}^n \gamma_j(x_i)x_i}\over{\sum_{i=1}^n \gamma_j(x_i)}} $ 
+
+$\Sigma_j^* = {{\sum_{i=1}^n \gamma_j (x_i)(x_i - \mu_j^*)(x_i-\mu_j^*)^T}\over{\sum_{i=1}^n \gamma_j(x_i)}} \color{blue} + \nu^2 I$
+
+$w_j^* = {1 \over {n}} \sum_{i=1}^n \gamma_j(x_i)$
 
 \section{LinAlg}
 
-\paragraph{Positiv Semidefiniteness (p.s.d)}
+\subsection{Positiv Semidefiniteness (p.s.d)}
 
 $K \in \mathbb{R}$ is psd 
 
-$\iff x^TKx \geq 0 \forall x in \mathbb{R}$
+$\iff x^TKx \geq 0 ~\forall x \in \mathbb{R}$
 
 $\iff all eigenvalues of K are \geq 0$
 
