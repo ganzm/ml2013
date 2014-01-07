@@ -32,6 +32,15 @@ $Generalisation Error = Bias^2 + Variance + Noise$
 
 \section{Probability}
 
+\paragraph{Covariance}: $Cov(X_1, X_2) = E[X_1 X_2] - E[X_1] E[X_2] = E[(X_1 - E[X_1])(X_2-E[X_2])]$
+
+\paragraph{Variance}: $Var[X] = E[X^2] - E[X]^2$
+
+
+\paragraph{Chain rule}: $P(X,Y) = {{P(X,Y)P(Y)}\over{P(Y)}} = P(X|Y)P(Y)$
+
+
+
 \subsection{Gaussian Distribution}
 
 $p_{1D}(x) = {1 \over {\sqrt{2 \pi \sigma^2}}} exp{\left( -{{\left(x - \mu\right)^2} \over{2 \sigma^2}} \right)}$
@@ -124,6 +133,8 @@ $k: \mathcal{X} \times \mathcal{X} \rightarrow \mathbb{R}  \Leftrightarrow \fora
 $\forall x, y$
 Gram Matrix K: $(K)_{i,j} = k(i,j)$ is p.s.d
 
+$k_1(x,y) = \langle \phi_1(x), \phi_1(y) \rangle $
+
 \subsection{Representer Theorem}
 
 Problem: $\min \limits_{f \in \mathcal{H}} \sum \limits_{i=1}^n l(f(x_i);x_i, y_i) + \lambda || f||_{\mathcal{H}}^2$
@@ -152,10 +163,12 @@ $f(x) = \sum \limits_{j=1}^n \alpha_j k(x_j, x)$
 \section{Multiple Classes}
 
 \subsection{1 VS all}
-
+TODO
 
 \section{Maximum Apposteriory estimation MAP}
-Maximize likelihood of model parameter $w^* = arg \max \limits_w P(w|x_1,...x_n,y_1,...,y_n $ 
+Maximize likelihood of model parameter $w^* = arg \max \limits_w P(w|x_1,...x_n,y_1,...,y_n) $ 
+
+map estimate $P(w|x_1,..,x_n,y_1,...,y_n) = {{P(w)P(y_1,...,y_n|x_1,...x_n,w)}\over{P(y_1,...,y_n|x_1,...,x_n)}}$	
 	
 \section{Bayesian Learning}
 
@@ -225,10 +238,10 @@ $,~~\beta_i = log {{1-err_i}\over{err_i}}$
 \section{Generative Models}
 
 \subsection{Conjugate priors}
-Pair of Prior assumption $P(y)$ about data and likelihood function is called conjucate if posterior distribution remains in the same family as the prior.
+	
 
 \section{Unsupervised Learning}
-\subsection{K-Means (Lloyd's Algo}
+\subsection{K-Means (Lloyd's Algo)}
 
 $z_i \leftarrow arg \min \limits_{j \in \lbrace 1,...,k \rbrace } || x_i - \mu_j^{(t-1)} ||_2^2 $
 
@@ -256,7 +269,28 @@ $K \in \mathbb{R}$ is psd
 
 $\iff x^TKx \geq 0 ~\forall x \in \mathbb{R}$
 
+
 $\iff all eigenvalues of K are \geq 0$
+
+
+
+\section{Convex optimisation}
+
+minimize $f(x)$ subject to 
+
+$g_i(x) \leq 0, i = 1,...,m$ inequality constr.
+
+$h_i(x) = 0, i = 1,...,p$ equality constr.
+
+Create the Lagrangian
+
+$L(x, \lambda, \nu) = f(x) + \sum_{i=1}^m{\lambda_i g_i(x) + \sum_{i=1}^p{\nu_i h_i(x)}}$
+
+Lagrange dual function: $ d(\lambda, \nu) = \inf_{x} L (x,\lambda, \nu) $
+
+Lagrange dual problem: max. $d(\lambda, \nu)$  subj. to $\lambda \geq 0$
+
+
 
 \maketitle
 
