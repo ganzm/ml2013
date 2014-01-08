@@ -141,7 +141,7 @@ Problem: $\min \limits_{f \in \mathcal{H}} \sum \limits_{i=1}^n l(f(x_i);x_i, y_
 
 sol: $\min \limits_{\alpha_1,...,\alpha_n} \sum \limits_{i=1}^n l \left( \sum \limits_{j=1}^n \alpha_j k(x_i, x_j);x_i,y_i  \right) + \lambda \alpha^T K \alpha$
 
-$f(x) = \sum \limits_{j=1}^n \alpha_j k(x_j, x)$
+Best $f(x) = \sum \limits_{j=1}^n \alpha_j k(x_j, x)$ is a sum of weighted kernel evaluations.
 
 \paragraph{Gaussian Kernel}: $exp\left( - {{||x-y||^2}\over{2 \sigma^2}} \right)$ 
 
@@ -192,7 +192,9 @@ Classifiy $P(y|x_{new}, w^* ) = {1 \over {1+exp(-y{w^*}^Tx)}}$
 
 \subsection{Bayesian Decision Theory}
 
-If distribution $P(y|x)$ is known, best action $a^*$ is determined: $a^* = arg \min \limits_{a \in \mathcal{A}} E_y[C(y,a)|x]$ where $C(y,a)$ is a cost function. TODO Slide 8
+If distribution $P(y|x)$ is known, best action $a^*$ is determined: $a^* = arg \min \limits_{a \in \mathcal{A}} E_y[C(y,a)|x]$ where $C(y,a)$ is a cost function.
+
+% see Slide 8
 
 
 
@@ -204,7 +206,16 @@ If distribution $P(y|x)$ is known, best action $a^*$ is determined: $a^* = arg \
 $P(y_{new}, x_{new}, D) = \int  P(y_{new}|x_{new}, w) P(w|D) dw$
 
 \section{Gaussian Processes}
-TODO
+
+$GP(f; \mu, k)$ with $\mu(x)$ as mean function and $k(x,x')$ as cov. function. If $y_i \sim \mathcal{N}(f(x_i), \sigma^2)$ with $A = \lbrace x_1,...,x_n \rbrace$ then Posterior is a GP $P(f|x_1,...,x_n1,y_1,...,y_n) = GP(f;\mu' , k' )$ with $\mu'(x) = \mu(x) + K _{x,A}(K_{AA}+\sigma^2 I)^{-1}(y A - \mu A)$ and $k' (x,x' ) = k(x,x')  - K_{x,A}(K_{AA} + \sigma^2I )^{-1} K_{A,x'}$
+
+
+% see Slide 9 page 27
+
+\subsection{Bayesian linear regression}
+
+
+
 
 \section{Ensemble Methods}
 
@@ -238,7 +249,7 @@ $,~~\beta_i = log {{1-err_i}\over{err_i}}$
 \section{Generative Models}
 
 \subsection{Conjugate priors}
-	
+Pair of Prior assumption $P(y)$ about data and likelihood function is called conjucate if posterior distribution remains in the same family as the prior.	
 
 \section{Unsupervised Learning}
 \subsection{K-Means (Lloyd's Algo)}
@@ -272,6 +283,14 @@ $\iff x^TKx \geq 0 ~\forall x \in \mathbb{R}$
 
 $\iff all eigenvalues of K are \geq 0$
 
+
+\section{Differentials}
+
+Chain rule: $ f(g(x)) \frac{d}{dx} = f'(g(x)) \cdot g'(x)$
+
+\subsection{Vector/Matrix differentiation}
+
+$\frac{d}{dx} f(x) = \left[ \frac{\partial f }{\partial x_1} ,...,\frac{\partial f}{\partial x_n} \right]$, $\frac{d}{dx}(b^T x) = \frac{d}{dx} (x^T b) = b$,$\frac{d}{dx}(x^T x) = \frac{d}{dx} (x^T x) = 2x$,$\frac{d}{dx}(x^T A x) = (A^T + A) x$
 
 
 \section{Convex optimisation}
