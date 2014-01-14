@@ -59,6 +59,9 @@ $Y=X_1 + X_2$
 $\Rightarrow Y \sim \mathcal{N}(\mu_1 + \mu_2; \Sigma_1+\Sigma_2)$
 
 
+
+
+
 \section{Ridge Regression}
 
 Problem: $ w^* =  arg \min \limits_w \sum \limits_{i=1}^n \left(y_i - w^Tx_i\right)^2 + \lambda ||w||_2^2$
@@ -263,7 +266,9 @@ $ \mu_j^{(t)} \leftarrow {1 \over {n_j}} \sum \limits_{i:z_i = j} x_i$
 
 $P(x|\theta) = P(x|\mu, \Sigma, w) = \sum \limits_i w_i \mathcal{N} (x;\mu_i, \Sigma_i)$, $~\sum \limits_i w_i = 1$
 
-Latent Variable: $\gamma_j(x) = P(z=j|x,\Sigma, \mu) = {{w_j P(x|\Sigma_j, \mu_j)}\over{\sum_j w_j P(x|\Sigma_l , \mu_l)}}$ 
+Latent Variable (apply Bayes): $\gamma_j(x) 
+= P(z=j|x,\Sigma, \mu) 
+= {{w_j P(x|\Sigma_j, \mu_j)}\over{\sum_j w_j P(x|\Sigma_l , \mu_l)}}$ 
 
 
 $\mu_j^* = {{\sum_{i=1}^n \gamma_j(x_i)x_i}\over{\sum_{i=1}^n \gamma_j(x_i)}} $ 
