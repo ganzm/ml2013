@@ -32,6 +32,8 @@ $Generalisation Error = Bias^2 + Variance + Noise$
 
 \section{Probability}
 
+\paragraph{Independence} $E[XY] = E[X] E[Y]$
+
 \paragraph{Covariance}: $Cov(X_1, X_2) = E[X_1 X_2] - E[X_1] E[X_2] = E[(X_1 - E[X_1])(X_2-E[X_2])]$
 
 \paragraph{Variance}: $Var[X] = E[X^2] - E[X]^2$
@@ -113,7 +115,7 @@ We are looking for a plane such that every sample has minimum distance 1(not act
 
 \subsection{Soft margin SVM}
 
-Unconstrained: $\min \limits_w w^Tw + C \sum \limits_i max\left(0, 1-y_iw^Tx_i\right)$
+Unconstrained: $\min \limits_w w^Tw + C \sum \limits_i^n max\left(0, 1-y_iw^Tx_i\right)$
 
 
 % TODO corrections slide 5 page 4
@@ -146,12 +148,15 @@ sol: $\min \limits_{\alpha_1,...,\alpha_n} \sum \limits_{i=1}^n l \left( \sum \l
 
 Best $f(x) = \sum \limits_{j=1}^n \alpha_j k(x_j, x)$ is a sum of weighted kernel evaluations.
 
-\paragraph{Gaussian Kernel}: $exp\left( - {{||x-y||^2}\over{2 \sigma^2}} \right)$ 
+\begin{enumerate}
 
+\item Gaussian Kernel: $exp\left( - {{||x-y||^2}\over{2 \sigma^2}} \right)$ 
 
-\paragraph{Sigmoid Kernel}: $tanh(\kappa x^T y + b)$
+\item Sigmoid Kernel: $tanh(\kappa x^T y + b)$
 
-\paragraph{Polynomial Kernel}: $\left( x^Ty + c \right)^d, c \geq 0$
+\item Polynomial Kernel: $\left( x^Ty + c \right)^d, c \geq 0$
+
+\end{enumerate}
 
 \paragraph{Closure Properties}
 
@@ -163,10 +168,9 @@ Best $f(x) = \sum \limits_{j=1}^n \alpha_j k(x_j, x)$ is a sum of weighted kerne
 \item $k(x,y) =  exp(k_1(x,y))$
 \end{enumerate}
 
-\section{Multiple Classes}
-
-\subsection{1 VS all}
-TODO
+%\section{Multiple Classes}
+%\subsection{1 VS all}
+%TODO
 
 \section{Maximum Apposteriory estimation MAP}
 Maximize likelihood of model parameter $w^* = arg \max \limits_w P(w|x_1,...x_n,y_1,...,y_n) $ 
@@ -314,6 +318,10 @@ Lagrange dual function: $ d(\lambda, \nu) = \inf_{x} L (x,\lambda, \nu) $
 
 Lagrange dual problem: max. $d(\lambda, \nu)$  subj. to $\lambda \geq 0$
 
+
+\section{Reformulate stuff as unconstrained prob.}
+
+TODO
 
 
 \maketitle
