@@ -4,6 +4,7 @@
 
 %\usepackage{times}
 %\usepackage{balance}
+\usepackage{enumitem}
 \usepackage{url}
 \usepackage{xcolor}
 \usepackage{graphicx}	% For figure environment
@@ -15,6 +16,17 @@
 \usepackage{geometry}
 \geometry{a4paper, top=6mm, left=7mm, right=7mm, bottom=8mm,
 headsep=0mm, footskip=0mm}
+
+
+\usepackage{titlesec}
+
+\titleformat{\section} {\normalfont\fontsize{12}{15}\bfseries}{\thesection}{1em}{}
+
+\titlespacing*{\section}{0pt}{0.5\baselineskip}{0.1\baselineskip}
+
+% change spacing for subsections
+% \titlespacing*{<command>}
+\titlespacing*{\subsection}{0pt}{0.5\baselineskip}{0.1\baselineskip}
 
 \begin{document}
 \title{ML - Summary 2013}
@@ -32,18 +44,18 @@ $Generalisation Error = Bias^2 + Variance + Noise$
 
 \section{Probability}
 
-\paragraph{Independence} $E[XY] = E[X] E[Y]$
+\textbf{Independence} $E[XY] = E[X] E[Y]$
 
-\paragraph{Covariance}: $Cov(X_1, X_2) = E[X_1 X_2] - E[X_1] E[X_2] = E[(X_1 - E[X_1])(X_2-E[X_2])]$
+\textbf{Covariance}: $Cov(X_1, X_2) = E[X_1 X_2] - E[X_1] E[X_2] = E[(X_1 - E[X_1])(X_2-E[X_2])]$
 
-\paragraph{Variance}: $Var[X] = E[X^2] - E[X]^2$
-
-
-\paragraph{Chain rule}: $P(X,Y) = {{P(X,Y)P(Y)}\over{P(Y)}} = P(X|Y)P(Y)$
+\textbf{Variance}: $Var[X] = E[X^2] - E[X]^2$
 
 
+\textbf{Chain rule}: $P(X,Y) = {{P(X,Y)P(Y)}\over{P(Y)}} = P(X|Y)P(Y)$
 
-\subsection{Gaussian Distribution}
+
+
+\paragraph{Gaussian Dist.}
 
 $p_{1D}(x) = {1 \over {\sqrt{2 \pi \sigma^2}}} exp{\left( -{{\left(x - \mu\right)^2} \over{2 \sigma^2}} \right)}$
 
@@ -108,7 +120,7 @@ Hard margin SVM problem: $\min \limits_w w^Tw , s.t.~ y_i W^T x_i >= 1$
 
 Confidence $\eta = y w^T x$
 
-Margin to w-plane $\gamma = \min \limits_{x' \in L} ||x-x'|| $
+Margin to w-plane $\gamma = \min \limits_{x' \in L} ||x-x'||_2 $
 
 We are looking for a plane such that every sample has minimum distance 1(not actually 1).
 
@@ -119,9 +131,9 @@ Unconstrained: $\min \limits_w w^Tw + C \sum \limits_i^n max\left(0, 1-y_iw^Tx_i
 
 
 % TODO corrections slide 5 page 4
-Constrained: $\min \limits_{w,w_o, e} {{1 \over 2} ||w||^2 + C \sum \limits_{i=1}^n {e_i}}$ 
+Constrained: $\min \limits_{w, \xi \geq	 0} {{1 \over 2} ||w||_2^2 + C \sum \limits_{i=1}^n {\xi_i}}$ 
 
-s.t. $ y_i \left( <w, x_i> + w_o \right) \geq 1 - e_i \forall i = 1,...,n$
+s.t. $ y_i \left( \langle w, x_i \rangle + w_0 \right) \geq 1 - \xi_i ~ \forall i = 1,...,n$
 
 
 Dual Form: $ \max \limits_{\alpha} \sum \limits_{i=1}^m \alpha_i - {1 \over 2} \sum \limits_{i,j} \alpha_i \alpha_j y_i y_j x_i^T x_j$ s.t. $\sum \limits_i \alpha_i y_i  = 0$ and $0 \leq \alpha_i \leq C$
@@ -129,7 +141,12 @@ Dual Form: $ \max \limits_{\alpha} \sum \limits_{i=1}^m \alpha_i - {1 \over 2} \
 
 Optimal solution is a linear combination of the data $w^* = \sum \limits_{i=1}^n \left( \alpha_i y_i \right) x_i$
 
-Classification: $y_{new} = sign(  \sum \limits_{i=1}^n \alpha_i y_i  k(x_i, x_{new})  )$
+Classify: $y_{new} 
+= sign(  \sum \limits_{i=1}^n \alpha_i y_i  k(x_i, x_{new}))
+= sign(w^Tx)$
+
+
+Multiclass: $ \min \limits_{w_1,...,w_c, \xi \geq 0} \sum \limits_{y=1}^{c}w_y^Tw_y + C \sum \limits_{i} \xi_i$ s.t. $w_{y_i}^Tx_i \geq w_y^T x_i + 1 - \xi_i \forall i \in \lbrace1,...,n\rbrace, y \in \lbrace1,...,c\rbrace$
 
 \section{Kernels $k(x,y)$}
 
@@ -148,7 +165,8 @@ sol: $\min \limits_{\alpha_1,...,\alpha_n} \sum \limits_{i=1}^n l \left( \sum \l
 
 Best $f(x) = \sum \limits_{j=1}^n \alpha_j k(x_j, x)$ is a sum of weighted kernel evaluations.
 
-\begin{enumerate}
+
+\begin{enumerate}[noitemsep]
 
 \item Gaussian Kernel: $exp\left( - {{||x-y||^2}\over{2 \sigma^2}} \right)$ 
 
@@ -160,7 +178,7 @@ Best $f(x) = \sum \limits_{j=1}^n \alpha_j k(x_j, x)$ is a sum of weighted kerne
 
 \paragraph{Closure Properties}
 
-\begin{enumerate}
+\begin{enumerate}[noitemsep,nolistsep]
 \item $k(x,y) = a k_1(x,y) + b k_2(x,y)$, $a,b \geq 0$
 \item $k(x,y) =  k_1(x,y)  k_2(x,y)$, $k_1, k_2$ are kernels
 \item $k(x,y) =  k_3(\phi(x),  \phi(y))$, $k_3$ is a kernel
@@ -172,7 +190,7 @@ Best $f(x) = \sum \limits_{j=1}^n \alpha_j k(x_j, x)$ is a sum of weighted kerne
 %\subsection{1 VS all}
 %TODO
 
-\section{Maximum Apposteriory estimation MAP}
+\section{Max. a posteriori estimation MAP}
 Maximize likelihood of model parameter $w^* = arg \max \limits_w P(w|x_1,...x_n,y_1,...,y_n) $ 
 
 map estimate $P(w|x_1,..,x_n,y_1,...,y_n) = {{P(w)P(y_1,...,y_n|x_1,...x_n,w)}\over{P(y_1,...,y_n|x_1,...,x_n)}}$	
@@ -199,7 +217,7 @@ Classifiy $P(y|x_{new}, w^* ) = {1 \over {1+exp(-y{w^*}^Tx)}}$
 
 \subsection{Bayesian Decision Theory}
 
-If distribution $P(y|x)$ is known, best action $a^*$ is determined: $a^* = arg \min \limits_{a \in \mathcal{A}} E_y[C(y,a)|x]$ where $C(y,a)$ is a cost function.
+Best action $a^*$ is determined: $a^* = arg \min \limits_{a \in \mathcal{A}} E_y[C(y,a)|x] = arg \min \limits_{a \in \mathcal{A}} \int \limits_y C(y,a)p(y|x) dy$ where $C(y,a)$ is a cost function.
 
 % see Slide 8
 
@@ -214,7 +232,7 @@ $P(y_{new}, x_{new}, D) = \int  P(y_{new}|x_{new}, w) P(w|D) dw$
 
 \section{Gaussian Processes}
 
-$GP(f; \mu, k)$ with $\mu(x)$ as mean function and $k(x,x')$ as cov. function. If $y_i \sim \mathcal{N}(f(x_i), \sigma^2)$ with $A = \lbrace x_1,...,x_n \rbrace$ then Posterior is a GP $P(f|x_1,...,x_n1,y_1,...,y_n) = GP(f;\mu' , k' )$ with $\mu'(x) = \mu(x) + K _{x,A}(K_{AA}+\sigma^2 I)^{-1}(y A - \mu A)$ and $k' (x,x' ) = k(x,x')  - K_{x,A}(K_{AA} + \sigma^2I )^{-1} K_{A,x'}$
+$GP(f; \mu, k)$ with $\mu(x)$ as mean function and $k(x,x')$ as cov. function. If $y_i \sim \mathcal{N}(f(x_i), \sigma^2)$ with $A = \lbrace x_1,...,x_n \rbrace$ then Posterior is a GP $P(f|x_1,...,x_n1,y_1,...,y_n) = GP(f;\mu' , k' )$ with $\mu'(x) = \mu(x) + K _{x,A}(K_{AA}+\sigma^2 I)^{-1}(y_A - \mu_A)$ and $k' (x,x' ) = k(x,x')  - K_{x,A}(K_{AA} + \sigma^2I )^{-1} K_{A,x'}$
 
 
 % see Slide 9 page 27
@@ -270,8 +288,10 @@ $ \mu_j^{(t)} \leftarrow {1 \over {n_j}} \sum \limits_{i:z_i = j} x_i$
 
 $P(x|\theta) = P(x|\mu, \Sigma, w) = \sum \limits_i w_i \mathcal{N} (x;\mu_i, \Sigma_i)$, $~\sum \limits_i w_i = 1$
 
-Latent Variable (apply Bayes): $\gamma_j(x) 
-= P(z=j|x,\Sigma, \mu) 
+Latent Variable: $\gamma_j(x_i) 
+= P(z_i=j|x,\Sigma, \mu) 
+= { {P(x|z_i=j)P(z_i=j)} \over {P(x)}}
+= { {P(x|z_i=j)P(z_i=j)} \over { \sum_{q=1}^k  P(x|z_i=q)P(z_i=q)}}
 = {{w_j P(x|\Sigma_j, \mu_j)}\over{\sum_j w_j P(x|\Sigma_l , \mu_l)}}$ 
 
 
@@ -283,8 +303,6 @@ $w_j^* = {1 \over {n}} \sum_{i=1}^n \gamma_j(x_i)$
 
 \section{LinAlg}
 
-\subsection{Positiv Semidefiniteness (p.s.d)}
-
 $K \in \mathbb{R}$ is psd 
 
 $\iff x^TKx \geq 0 ~\forall x \in \mathbb{R}$
@@ -293,9 +311,11 @@ $\iff x^TKx \geq 0 ~\forall x \in \mathbb{R}$
 $\iff all eigenvalues of K are \geq 0$
 
 
+\textbf{Norms:} $||x||_p = (\sum_{i=1}^n |x_i|^p )^{1 \over p}$, $||x||_1 = \sum_{i=1}^n |x_i|$, $||x||_0 = $ nr of nonzero entries
+
 \section{Differentials}
 
-Chain rule: $ f(g(x)) \frac{d}{dx} = f'(g(x)) \cdot g'(x)$
+$ f(g(x)) \frac{d}{dx} = f'(g(x)) \cdot g'(x)$, $ {d \over {dx}} log(x) = {1 \over x}$
 
 \subsection{Vector/Matrix differentiation}
 
