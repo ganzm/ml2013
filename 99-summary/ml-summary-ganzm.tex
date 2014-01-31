@@ -26,7 +26,7 @@ headsep=0mm, footskip=0mm}
 
 % change spacing for subsections
 % \titlespacing*{<command>}
-\titlespacing*{\subsection}{0pt}{0.5\baselineskip}{0.1\baselineskip}
+\titlespacing*{\subsection}{0pt}{0.5\baselineskip}{0.0\baselineskip}
 
 \titlespacing*{\paragraph}{0pt}{0.2\baselineskip}{0.1\baselineskip}
 
@@ -99,13 +99,13 @@ Problem: $ w^* =  arg \min \limits_w \sum \limits_{i=1}^n l\left(w;x_i,y_i\right
 
 
 \subsection{Some Loss-Functions}
-\textbf{Square Loss} $l_2 = (y_i - w^T x_i)^2$
+\paragraph{Square-Loss} $l_2 = (y_i - w^T x_i)^2$
 
-\textbf{0/1 Loss:} $ l_{0/1}  =  y_i \neq sign(w^Tx_i)$
+\paragraph{0/1 Loss:} $ l_{0/1}  =  y_i \neq sign(w^Tx_i)$
 
-\textbf{Perceptron Loss:} $l_p\left(w;y_i,x_i \right) =   max(0, -y_i w^T x_i)$
+\paragraph{Perceptron Loss:} $l_p\left(w;y_i,x_i \right) =   max(0, -y_i w^T x_i)$
 
-\textbf{Hinge Loss (SVM):} $l_h =   max(0, 1 -y_i w^T x_i)$
+\paragraph{Hinge Loss (SVM):} $l_h =   max(0, 1 -y_i w^T x_i)$
 
 \subsubsection{Stochastic gradient Descent}
 pick random $x'$ and $y'$
@@ -282,8 +282,33 @@ $,~~\beta_i = log {{1-err_i}\over{err_i}}$
 
 \section{Generative Models}
 
+Aim to estimate joint dist. $P(y,x)$ instead of $P(y|x)$.
+
+\begin{itemize}[noitemsep,nolistsep]
+\item Estimate prior on labels $P(y)$
+\item Estimate cond. dist. $P(x|y_i) ~~ \forall i \in I $
+\item Predict $P(y|x) = {1 \over Z} P(Y)P(x|y)$ 
+
+where $Z=\sum_{y'} P(x|y')$
+\end{itemize}
+
 \subsection{Conjugate priors}
 Pair of Prior assumption $P(y)$ about data and likelihood function is called conjucate if posterior distribution remains in the same family as the prior.	
+
+\subsection{Gaussian Naive Bayes Classifier}
+\begin{itemize}[noitemsep,nolistsep]
+\item MLE for class prior $P(Y=y) = {{Count(Y=y)}\over n}$
+\item MLE feature dist. $P(x_i|y) = \mathcal{N}(x_i;\mu_{y,i}, \sigma^2_{y,i})$ with
+
+$\mu_{y,i} = mean$ and $\sigma^2 = {1 \over{Count(Y=y)}} \sum (x - \mu)^2$
+\end{itemize}
+
+
+\subsection{Fisher's LDA}
+2 gaussian dist. with fixed $p=0.5$ and equal covariance $\Sigma$. Predict $y = sign(f(x)) = sign(w^Tx + w_0)$ where $w=\Sigma^{-1}(\mu_{+}-\mu_{-})$ and 
+$w_0={1\over 2}(\mu^T_{-}\Sigma^{-1}\mu_{-} -\mu^T_{+} \Sigma^{-1}\mu_+)$.
+
+Where discriminant function $f(x) = log {{P(Y=1|x)}\over{P(Y=-1|x)}}$
 
 \section{Unsupervised Learning}
 \subsection{K-Means (Lloyd's Algo)}
@@ -348,17 +373,14 @@ Lagrange dual function: $ d(\lambda, \nu) = \inf_{x} L (x,\lambda, \nu) $
 Lagrange dual problem: max. $d(\lambda, \nu)$  subj. to $\lambda \geq 0$
 
 
-\section{Reformulate stuff as unconstrained prob.}
-
-TODO
-
+	
 
 \maketitle
 
 
 %% Memo - ignore this
 
-\section{PCA - Principal Component Analysis}
+%\section{PCA - Principal Component Analysis}
 
 High dimensional data is projected onto a low dimensional subspace while maximizing variance.
 
@@ -787,5 +809,7 @@ $\nu^{k+1} := \nu^k + \rho  (Ax^{k+1} + Bz^{k+1} -c)$
 \subsubsection{PCP Recovery Condition}
 
 Probability. $ 1 - \mathcal{O}(n^{-10})$ with $\lambda = \frac{1}{sqrt(n)}$
+
+
 
 \end{document}
