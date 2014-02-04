@@ -129,7 +129,7 @@ We are looking for a plane such that every sample has minimum distance 1(not act
 
 \subsection{Soft margin SVM}
 
-Unconstrained: $\min \limits_w w^Tw + C \sum \limits_i^n max\left(0, 1-y_iw^Tx_i\right)$
+Unconstrained: $\min \limits_w w^Tw + C \sum_i^n max\left(0, 1-y_iw^Tx_i\right)$
 
 
 % TODO corrections slide 5 page 4
@@ -213,7 +213,7 @@ $P(y|x,w) = Ber(y; \sigma(w^Tx))$
 
 Link Func: $P(Y=+1|x,w) =  \sigma(w^Tx) = 	{1 \over {1+exp(-w^Tx)}}$
 
-Learn $w^* = arg \min \limits_w \sum \limits_{i=1}^n log \left( 1 + exp(-y_iw^Tx_i) \right)$
+Learn $w^* = arg \min \limits_w \sum_{i=1}^n log \left( 1 + exp(-y_iw^Tx_i) \right)$
 
 Classifiy $P(y|x_{new}, w^* ) = {1 \over {1+exp(-y{w^*}^Tx)}}$
 
@@ -270,13 +270,13 @@ AdaBoost, with weight $w_i$ per datapoint greedily optimizes for exp loss.
 \begin{itemize}[noitemsep,nolistsep]
 \item for $i=1:m$
 \begin{itemize}[noitemsep,nolistsep]
-\item $h_i \leftarrow arg \min \limits_h \sum \limits_{j=1}^n  w_j^{(i)}[h(x_j) \neq y_j]$
-\item $err_i = {{\sum \limits_{j=1}^n w_j^{(i)}[y_j \neq h_i(x_j)]}\over{\sum \limits_{j=1}^n w_j^{(i)}}} $
+\item $h_i \leftarrow arg \min \limits_h \sum _{j=1}^n  w_j^{(i)}[h(x_j) \neq y_j]$
+\item $err_i = {{\sum_{j=1}^n w_j^{(i)}[y_j \neq h_i(x_j)]}\over{\sum_{j=1}^n w_j^{(i)}}} $
 $,~~\beta_i = log {{1-err_i}\over{err_i}}$
 
 \item $w_j^{(i+1)} = w_j^{(i)} exp(\beta_i [h_i(x_j) \neq y_j])$
 \end{itemize}
-\item output: $f(x) = \sum \limits_{i=1}^n \beta_i h_i (x)$
+\item output: $f(x) = \sum_{i=1}^n \beta_i h_i (x)$
 \end{itemize}
 
 
@@ -310,15 +310,15 @@ $w_0={1\over 2}(\mu^T_{-}\Sigma^{-1}\mu_{-} -\mu^T_{+} \Sigma^{-1}\mu_+)$.
 
 Where discriminant function $f(x) = log {{P(Y=1|x)}\over{P(Y=-1|x)}}$
 
-\section{Unsupervised Learning}
-\subsection{K-Means (Lloyd's Algo)}
+
+\section{K-Means (Lloyd's Algo)}
 
 $z_i \leftarrow arg \min \limits_{j \in \lbrace 1,...,k \rbrace } || x_i - \mu_j^{(t-1)} ||_2^2 $
 
 $ \mu_j^{(t)} \leftarrow {1 \over {n_j}} \sum \limits_{i:z_i = j} x_i$
 
 
-\subsection{GMM}
+\section{Gaussian Mixture Model (GMM)}
 
 $P(x|\theta) = P(x|\mu, \Sigma, w) = \sum \limits_i w_i \mathcal{N} (x;\mu_i, \Sigma_i)$, $~\sum \limits_i w_i = 1$
 
@@ -373,6 +373,33 @@ Lagrange dual function: $ d(\lambda, \nu) = \inf_{x} L (x,\lambda, \nu) $
 Lagrange dual problem: max. $d(\lambda, \nu)$  subj. to $\lambda \geq 0$
 
 
+\section{PCA - Principal Component Analysis}
+
+$Z = U_k^T \cdot X$ where $Z$ is dim reduced. Project $x$ to $\tilde{x}$ and minimize error $|| x_n - ~x_n ||_2$, variance of projected data is maximized.
+
+\begin{itemize}[noitemsep,nolistsep]
+% \item $ X = [x_1,x_2,...x_n]$
+\item Covariance $\Sigma = \frac{1}{N} \cdot (  X - M ) ( X - M )^T$
+\begin{itemize}[noitemsep,nolistsep]
+\item $Cov(X_i, X_i) = Var(X_i)$
+\item Symmetric: $ Cov(X_i,X_j) = Cov(X_j, X_i)$
+\end{itemize}
+\item $Eig(\Sigma) = U \cdot \Lambda \cdot U^T$
+% \item Select first k orthonormal vectors from U and get projection matrix. 
+\end{itemize}
+
+\paragraph{Deduction} 
+Var. of proj. data $Z$ is maximal if cov.
+
+$\Sigma_Z = A^T \Sigma_X A = \frac{1}{n} (A^TX - \bar{X})(A^TX - \bar{X})^T $.
+
+By choosing $A = U$ where $\Sigma_X = U \Lambda U^T$ the covariance $\Sigma_Z$ becomes diagonal.
+
+
+
+
+
+
 	
 
 \maketitle
@@ -380,18 +407,18 @@ Lagrange dual problem: max. $d(\lambda, \nu)$  subj. to $\lambda \geq 0$
 
 %% Memo - ignore this
 
-%\section{PCA - Principal Component Analysis}
+\section{PCA - Principal Component Analysis}
 
 High dimensional data is projected onto a low dimensional subspace while maximizing variance.
 
-\begin{itemize}
+\begin{itemize}[noitemsep,nolistsep]
 \item project $x$ to $\tilde{x}$ and minimize error $|| x_n - ~x_n ||_2$
 \item variance of projected data is maximized
 \end{itemize}
 
 \subsubsection{Algorithm}
 
-\begin{itemize}
+\begin{itemize}[noitemsep,nolistsep]
 % \item $ X = [x_1,x_2,...x_n]$
 \item Covariance $\Sigma = \frac{1}{N} \cdot (  X - M ) ( X - M )^T$
 \begin{itemize}
